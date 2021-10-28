@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagesServer v3.0", "ImagesServer v3.0\ImagesServer v3.0.csproj", "{0FE4AE30-2CE7-4BAA-B535-4FCDE6EC57A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMAGE SERVER 2.0", "ImagesServer v3.0\IMAGE SERVER 2.0.csproj", "{0FE4AE30-2CE7-4BAA-B535-4FCDE6EC57A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
