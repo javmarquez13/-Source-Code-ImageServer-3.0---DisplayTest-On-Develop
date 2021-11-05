@@ -9,6 +9,26 @@ namespace ImagesServer_v3._0
 {
     class TestAndCustomOS
     {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         public static string _POSREADY7Skylake => "POS Ready 7 (32 Bit) XR7 Plus Compatible Skylake D370-1038-0100_01.00.00.02.wim";
         public static string _POS7_64bit => "POS7_64bit.wim"; 
         public static string _POSReady_2009 => "POSReady_2009.wim";

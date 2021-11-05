@@ -407,6 +407,11 @@ namespace ImagesServer_v3._0
     /// 15 AGOSTO 2021 
     /// New version first release to production
     /// 3.0.0.1
+    /// 
+    /// 
+    /// 02 NOVEMBER
+    /// SKIP HIPOT VALIDATION TO NEW IMPLEMENTATION DISPLAY STATION
+    /// 3.0.0.2
 
 
     ///<summary>
@@ -421,7 +426,7 @@ namespace ImagesServer_v3._0
             InitializeComponent();
             RoundObjects();
             //label with the application version.
-            _version = "v3.0.0.1";
+            _version = "v3.0.0.2";
             lblVersion.Text = _version;
         }
 
@@ -1355,11 +1360,11 @@ namespace ImagesServer_v3._0
                 return;
             }
 
-            if (!CheckStepProcess.CheckStep(_serialNumber, "HIPOT"))
-            {
-                MessageBox.Show("Unidad sin PASS de HIPOT" + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            //if (!CheckStepProcess.CheckStep(_serialNumber, "HIPOT"))
+            //{
+            //    MessageBox.Show("Unidad sin PASS de HIPOT" + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    return;
+            //}
 
 
             if (_BaseBoard == "Pocono" && _class == "7350")     
