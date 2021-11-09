@@ -412,6 +412,15 @@ namespace ImagesServer_v3._0
     /// 02 NOVEMBER
     /// SKIP HIPOT VALIDATION TO NEW IMPLEMENTATION DISPLAY STATION
     /// 3.0.0.2
+    /// 
+    /// NOVEMBER 5 
+    /// ADD CLASS TO ALOCATE ALL GLOBALS VARIABLES
+    /// 3.0.0.3
+    /// 
+    /// NOVEMBER 8th
+    /// NEW LOGIC TO INSTALL CUSTOM OS FROM CONFIGURABLE INI FILE  TestCustomOS.ini
+    /// NEW LOGIC TO GET COMPLTE PATH FROM INI FILE TestCustomOS.ini
+    /// 3.0.0.4
 
 
     ///<summary>
@@ -426,19 +435,11 @@ namespace ImagesServer_v3._0
             InitializeComponent();
             RoundObjects();
             //label with the application version.
-            _version = "v3.0.0.2";
+            _version = "v3.0.0.4";
             lblVersion.Text = _version;
         }
 
         #region Variables Globales
-
-        public static string IMAGE_TO_INSTALL { get; set; }
-        public static string _class { get; set; }
-        public static string _serialNumber { get; set; }
-        public static string _mc { get; set; }
-        public static string _tracer { get; set; }
-        public static string _ID { get; set; }
-        public static string _Name { get; set; }
 
         string _RadsImage = @"X:\ImagingTools\RadsImageX.exe";
         string _ImageXUEFI = @"X:\windows\system32\imagexUFEI.exe";
@@ -451,20 +452,15 @@ namespace ImagesServer_v3._0
         string _tempDrive = "";
 
 
-        //WIMLIB
-        List<string> _AvailableVolumes = new List<string>();
+
         Diskpart Diskpart = new Diskpart();
         ImageXGUI JIMAGEX;
 
 
-        string ATM_IMAGES = "T:"; //Pangaea 02
-        string SSSCO_IMAGES_02 = "R:"; //Pangaea 02
-
-        iFactoryInfo.iFactoryInfo _iFactoryInfo = new iFactoryInfo.iFactoryInfo();
+        //TestAndCustomOS _TestAndCustomOS = new TestAndCustomOS();
 
 
-
-        TestAndCustomOS _TestAndCustomOS = new TestAndCustomOS();
+        DialogResult dialogResult;
 
         //Diskpart Region
         enum DiskPartCommands
@@ -589,7 +585,7 @@ namespace ImagesServer_v3._0
             tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControl1.Region = new Region(new RectangleF(this.tabPage1.Left, this.tabPage1.Top, this.tabPage1.Width, this.tabPage1.Height));
 
-            _TestAndCustomOS.GettingImages();
+            //_TestAndCustomOS.GettingImages();
 
             //simulate click 
             using (WaitWin waitWin = new WaitWin(RefreshItems, "UPDATING INFORMATION"))
@@ -645,7 +641,8 @@ namespace ImagesServer_v3._0
             //Disable button while the function is running
             btnCustomOS_sscos.Enabled = false;
 
-            InstallCustomOS();
+            //InstallCustomOS();
+            InstallCustomOS_2021();
 
             //Enable button when the function will be completed
             btnCustomOS_sscos.Enabled = true;
@@ -915,12 +912,17 @@ namespace ImagesServer_v3._0
                 return;
             }
 
+
+            if (Globals.IS_ADMIN) goto SkipValidation;
+
             DialogResult dr = new DialogResult();
             AdminUser Admin = new AdminUser();
 
             dr = Admin.ShowDialog();
             if (dr != DialogResult.OK) return;
 
+
+            SkipValidation:
             tabControl1.SelectedTab = tabPage3;
         }
 
@@ -934,12 +936,15 @@ namespace ImagesServer_v3._0
                 return;
             }
 
+            if (Globals.IS_ADMIN) goto SkipValidation;
+
             DialogResult dr = new DialogResult();
             AdminUser Admin = new AdminUser();
 
             dr = Admin.ShowDialog();
             if (dr != DialogResult.OK) return;
 
+            SkipValidation:
             tabControl1.SelectedTab = tabPage4;
         }
 
@@ -953,12 +958,15 @@ namespace ImagesServer_v3._0
                 return;
             }
 
+            if (Globals.IS_ADMIN) goto SkipValidation;
+
             DialogResult dr = new DialogResult();
             AdminUser Admin = new AdminUser();
 
             dr = Admin.ShowDialog();
             if (dr != DialogResult.OK) return;
 
+            SkipValidation:
             tabControl1.SelectedTab = tabPage2;
         }
 
@@ -972,12 +980,15 @@ namespace ImagesServer_v3._0
                 return;
             }
 
+            if (Globals.IS_ADMIN) goto SkipValidation;
+
             DialogResult dr = new DialogResult();
             AdminUser Admin = new AdminUser();
 
             dr = Admin.ShowDialog();
             if (dr != DialogResult.OK) return;
 
+            SkipValidation:
             tabControl1.SelectedTab = tabPage5;
         }
 
@@ -1267,42 +1278,25 @@ namespace ImagesServer_v3._0
 
         #region Funciones  Aplicacion
         //FUNCTION TO GET SERIAL NUMBER, MC NUMBER BY TRACER NUMBER
-        Tuple<string, string, string, string, string, string, bool> UnitInfoFromIfactory()
+        bool UnitInfoFromIfactory()
         {
-            DialogResult dr = new DialogResult();
-            WinTracer winTracer = new WinTracer();
-            string _Class = "";
-            string _SerialNumber = "";
-            string _McNumber = "";
-            string _tracer = "";
-            string _ID = "";
-            string _Name = "";
-
             bool _flag = false;
 
-
-            dr = winTracer.ShowDialog();
+            dialogResult = new WinTracer().ShowDialog();
             this.Refresh();
 
-            if (dr == DialogResult.OK)
-            {
-                _Class = winTracer.CLASS;
-                _SerialNumber = winTracer.SERIALNUMBER;
-                _McNumber = winTracer.MC;
-                _tracer = winTracer.TRACER;
-                _ID = winTracer.IDNumber;
-                _Name = winTracer.IDName;                
-
-                lblTracer.Text = "TRACER: " + _tracer;
-                lblSN.Text = "SERIAL NUMBER: " + _SerialNumber;
-                lblClass.Text = "CLASS: " + _Class;
-                lblMC.Text = "MC: " + _McNumber;
-                lblID.Text = "#ID: " + _ID;
-                lblName.Text = "Name: " + _Name;
+            if (dialogResult == DialogResult.OK)
+            {          
+                lblTracer.Text = "TRACER: " + Globals.TRACER;
+                lblSN.Text = "SERIAL NUMBER: " + Globals.WIP;
+                lblClass.Text = "CLASS: " + Globals.CLASS;
+                lblMC.Text = "MC: " + Globals.MC;
+                lblID.Text = "#ID: " + Globals.USER_ID;
+                lblName.Text = "Name: " + Globals.USER_NAME;
 
                 _flag = true;
             }
-            return Tuple.Create(_Class, _SerialNumber, _McNumber, _tracer, _ID, _Name, _flag);
+            return _flag;
         }
 
         //FUNCION TO INSTAL TEST IMAGE FOR SSCOS
@@ -1310,51 +1304,38 @@ namespace ImagesServer_v3._0
         {
             bool _flag              = false;
             string result          = string.Empty;
-            //int _result             = 0;
             DialogResult _dr = DialogResult.Abort;
 
-            var items = UnitInfoFromIfactory();
-            _class        = items.Item1;
-            _serialNumber = items.Item2;
-            _mc           = items.Item3;
-            _tracer       = items.Item4;
-            _ID           = items.Item5;
-            _Name         = items.Item6;
-            _flag         = items.Item7;
-
-
-            if (string.IsNullOrEmpty(_tracer)) return;
-
-            SCODisplayTest DisplayTest = new SCODisplayTest();
-            if (DisplayTest.ShowDialog() == DialogResult.Abort) return;
-
-            this.Refresh();
-                
-            var _items        = StaticFunctions.GetBuildType();
-            string _mainDisk  = _items.Item3;
-            string _BaseBoard = StaticFunctions.GetMotherBoardType();
-
+            _flag = UnitInfoFromIfactory();
 
             if (!_flag) return;
 
-            var _items2         = CheckEJL.IsCompleted_SSCOS(_mainDisk, _tracer);
-            string _ejl         = _items2.Item1;
-            bool _isCompleteEjl = _items2.Item2;
+            if (string.IsNullOrEmpty(Globals.TRACER)) return;
 
+            dialogResult = new SCODisplayTest().ShowDialog();
+            if (dialogResult == DialogResult.Abort) return;
+
+            this.Refresh();
+
+            StaticFunctions.GetBuildType();
+
+            Globals.BASE_BOARD = StaticFunctions.GetMotherBoardType();
+        
+            bool _isCompleteEjl = CheckEJL.IsCompleted_SSCOS(Globals.MAIN_DISK, Globals.TRACER);
 
             if (_isCompleteEjl)
             {
-                MessageBox.Show("Unidad con log : " + _tracer + ".ejl" + " completo" + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Unidad con log : " + Globals.TRACER + ".ejl" + " completo" + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            if (CheckStepProcess.CheckStep(_serialNumber, "CUSTOM OS"))
+            if (CheckStepProcess.CheckStep(Globals.WIP, "CUSTOM OS"))
             {
                 MessageBox.Show("Unidad con PASS de CUSTOM OS" + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            if (CheckStepProcess.CheckStep(_serialNumber, "FVT"))
+            if (CheckStepProcess.CheckStep(Globals.WIP, "FVT"))
             {
                 MessageBox.Show("Unidad con PASS de FVT" + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -1367,52 +1348,64 @@ namespace ImagesServer_v3._0
             //}
 
 
-            if (_BaseBoard == "Pocono" && _class == "7350")     
+            if (Globals.BASE_BOARD == "Pocono" && Globals.CLASS == "7350")     
             {
-                IMAGE_TO_INSTALL = _TestAndCustomOS._TestImage7350R5; 
+                Globals.IMAGE_TO_INSTALL = SSCO_Images.TestImage7350R5; 
                 goto FoundIt;
             }
 
-            if (_BaseBoard == "Monaco" && _class == "7350")
+            if (Globals.BASE_BOARD == "Monaco" && Globals.CLASS == "7350")
             {
-                IMAGE_TO_INSTALL = _TestAndCustomOS._TestImage7350R6L;
+                Globals.IMAGE_TO_INSTALL = SSCO_Images.TestImage7350R6L;
                 goto FoundIt;
             }
-            if (_BaseBoard == "Monaco" && _class == "7358")
+            if (Globals.BASE_BOARD == "Monaco" && Globals.CLASS == "7358")
             {
-                IMAGE_TO_INSTALL = _TestAndCustomOS._TestImage7358;
-                goto FoundIt;
-            }
-
-            if (_BaseBoard == "Richmond" && _class == "7358" || _BaseBoard == "Richmond" && _class == "7360")
-            {
-                IMAGE_TO_INSTALL = _TestAndCustomOS._TestImage7703;            
+                Globals.IMAGE_TO_INSTALL = SSCO_Images.TestImage7702;
                 goto FoundIt;
             }
 
-            if (_BaseBoard == "Monaco" && _class == "7360")
+            if (Globals.BASE_BOARD == "Richmond" && Globals.CLASS == "7358" || Globals.BASE_BOARD == "Richmond" && Globals.CLASS == "7360")
             {
-                IMAGE_TO_INSTALL = _TestAndCustomOS._TestImage7702;              
+                Globals.IMAGE_TO_INSTALL = SSCO_Images.TestImage7703;            
                 goto FoundIt;
             }
 
-            if (_BaseBoard == "Monaco" && _class == "7362")
+            if (Globals.BASE_BOARD == "Monaco" && Globals.CLASS == "7360")
             {
-                IMAGE_TO_INSTALL = _TestAndCustomOS._TestImage7702;
+                Globals.IMAGE_TO_INSTALL = SSCO_Images.TestImage7702;              
                 goto FoundIt;
             }
 
-            OnError:
+            if (Globals.BASE_BOARD == "Monaco" && Globals.CLASS == "7362")
             {
-                lblImageName.Text = "COMPATIBLE IMAGE NOT FOUND TO " + _BaseBoard.ToUpper() + " MOTHERBOARD";
+                Globals.IMAGE_TO_INSTALL = SSCO_Images.TestImage7702;
+                goto FoundIt;
+            }
+
+            if (Globals.BASE_BOARD == "Sonoma" && Globals.CLASS == "7360")
+            {
+                Globals.IMAGE_TO_INSTALL = SSCO_Images.TestImage7772;
+                goto FoundIt;
+            }
+
+            if (Globals.BASE_BOARD == "Eldora" && Globals.CLASS == "7360")
+            {
+                Globals.IMAGE_TO_INSTALL = SSCO_Images.TestImage7773;
+                goto FoundIt;
+            }
+
+        OnError:
+            {
+                lblImageName.Text = "COMPATIBLE IMAGE NOT FOUND TO " + Globals.BASE_BOARD.ToUpper() + " MOTHERBOARD";
                 MessageBox.Show("NO SE HA ENCONTRADO IMAGEN DE PRUEBA PARA ESTA UNIDAD." + "\n" + "\n" + "\n" + "CONTACTA A INGENIERIA DE PRUEBAS!", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
 
             FoundIt:
-            {
-                lblImageName.Text = IMAGE_TO_INSTALL;
+            {        
+                lblImageName.Text = Globals.IMAGE_TO_INSTALL;
 
                 //OLD LOGIC TO INSTALL TEST IMAGE
                 //_result = ApplyRadsImage(SSSCO_IMAGES_02 + "\"" + IMAGE_TO_INSTALL + "\"", "", Properties.Settings.Default._applyMode);
@@ -1425,8 +1418,7 @@ namespace ImagesServer_v3._0
                 //    MessageBox.Show("NO SE INSTALARA IMAGEN DEBIDO A QUE NO ESTA LIBERADA EN TEST DATA WARE HOUSE." + "\n" + "\n" + "\n" + "CONTACTA A INGENIERIA DE PRUEBAS!", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //    return;
                 //}
-
-                           
+                
                 void SetupDisk()
                 {
                     result = Diskpart.SendCommand("Select Disk 0", "Clean");
@@ -1453,8 +1445,8 @@ namespace ImagesServer_v3._0
 
                 //_dr = StaticJImgaeX.APPLY_JIMAGEX(1, SSSCO_IMAGES_02 + IMAGE_TO_INSTALL, "D:");
 
-                _dr = StaticJImgaeX.APPLY_JIMAGEX(2, SSSCO_IMAGES_02 + IMAGE_TO_INSTALL, "C:");
-
+                //_dr = StaticJImgaeX.APPLY_JIMAGEX(2, SSSCO_IMAGES_02 + Globals.IMAGE_TO_INSTALL, "C:");
+                _dr = StaticJImgaeX.APPLY_JIMAGEX(2,Globals.IMAGE_TO_INSTALL, "C:"); //path completo desde el INI FILE
 
                 //result = Diskpart.BCDBoot(@"C:\Windows /s C:"); working
                 result = Diskpart.BCDBoot(@"C:\Windows /s D:");
@@ -1508,11 +1500,11 @@ namespace ImagesServer_v3._0
 
                 if (!DirInfo.Exists) DirInfo.Create();
 
-                using (StreamWriter sw = File.CreateText(_pathUnitInfo + _tracer + "_" + DateTime.Now.Year + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second + ".txt"))
+                using (StreamWriter sw = File.CreateText(_pathUnitInfo + Globals.TRACER + "_" + DateTime.Now.Year + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second + ".txt"))
                 {
-                    sw.WriteLine(_tracer);
-                    sw.WriteLine(_ID);
-                    sw.WriteLine(_Name);
+                    sw.WriteLine(Globals.TRACER);
+                    sw.WriteLine(Globals.USER_ID);
+                    sw.WriteLine(Globals.USER_NAME);
                     sw.WriteLine("0"); //defualt 0 
                     sw.Close();
                 }
@@ -1530,13 +1522,6 @@ namespace ImagesServer_v3._0
         //FUNCTION TO INSTALL TEST IMAGE FOR ATMS
         void InstallTestImageATM()
         {
-            string IMAGE_TO_INSTALL = string.Empty;
-            string _class           = string.Empty;
-            string _serialNumber    = string.Empty;
-            string _mc              = string.Empty;
-            string _tracer          = string.Empty;
-            string _ID              = string.Empty;
-            string _Name            = string.Empty;
             string _OS              = string.Empty;
             bool _flag              = false;
             int _result             = 0;
@@ -1548,20 +1533,13 @@ namespace ImagesServer_v3._0
             DialogResult _dr        = DialogResult.Abort;
 
 
-            var items     = UnitInfoFromIfactory();
-            _class        = items.Item1;
-            _serialNumber = items.Item2;
-            _mc           = items.Item3;
-            _tracer       = items.Item4;
-            _ID           = items.Item5;
-            _Name         = items.Item6;
-            _flag         = items.Item7;
+            _flag = UnitInfoFromIfactory();
 
             if (!_flag) return;
 
-            _BaseBoard = StaticFunctions.GetMotherBoardType(); //GETTING THE BASEBOARD TYPE
+            Globals.BASE_BOARD = StaticFunctions.GetMotherBoardType(); //GETTING THE BASEBOARD TYPE
 
-            var items2 = StaticFunctions.GetOS(_class, _mc);
+            var items2 = StaticFunctions.GetOS(Globals.CLASS, Globals.MC);
 
             _OS            = items2.Item1;
             _MisanoFeature = items2.Item2;
@@ -1573,17 +1551,17 @@ namespace ImagesServer_v3._0
                 case "WIN7":
 
                     if (_BaseBoard == "Estoril" && !_MisanoFeature)
-                        IMAGE_TO_INSTALL = _TestAndCustomOS._TestImageEstoril_Windows7;
+                        Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageEstoril_Windows7;
 
                     if (_BaseBoard == "Misano" && _MisanoFeature)
-                        IMAGE_TO_INSTALL = _TestAndCustomOS._TestImageMisano_Windows7;
+                        Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageMisano_Windows7;
 
                     if (_BaseBoard == "Misano-K" && _MisanoFeature)
-                        IMAGE_TO_INSTALL = _TestAndCustomOS._TestImageMisano_Windows7;
+                        Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageMisano_Windows7;
 
                     if (Convert.ToInt32(value) != 1)
                     {
-                        lblImageName.Text = IMAGE_TO_INSTALL;
+                        lblImageName.Text = Globals.IMAGE_TO_INSTALL;
                         MessageBox.Show("La configuracion del Bios no es la correcta!" + "\n" + "\n" + "CONFIGURACION ACTUAL: BIOS_MODE=UEFI" + "\n" + "\n" + "CONFIGURACION ESPERADA: BIOS_MODE=LEGACY", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         lblResult.ForeColor = Color.Red;
                         lblResult.Text = "TEST IMAGE: Revise configuracion: BIOS_MODE=LEGACY";
@@ -1595,17 +1573,17 @@ namespace ImagesServer_v3._0
 
                 case "WIN10":
                     if (_BaseBoard == "Estoril" && !_MisanoFeature)
-                        IMAGE_TO_INSTALL = _TestAndCustomOS._TestImageEstoril_Windows10;
+                        Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageEstoril_Windows10;
 
                     if (_BaseBoard == "Misano" && _MisanoFeature)
-                        IMAGE_TO_INSTALL = _TestAndCustomOS._TestImageMisano_Windows10;
+                        Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageMisano_Windows10;
 
                     if (_BaseBoard == "Misano-K" && _MisanoFeature)
-                        IMAGE_TO_INSTALL = _TestAndCustomOS._TestImageKabyLake_Windows10;
+                        Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageKabyLake_Windows10;
 
                     if (Convert.ToInt32(value) != 2)
                     {
-                        lblImageName.Text = IMAGE_TO_INSTALL;
+                        lblImageName.Text = Globals.IMAGE_TO_INSTALL;
                         MessageBox.Show("La configuracion del Bios no es la correcta!" + "\n" + "\n" + "CONFIGURACION ACTUAL: BIOS_MODE=LEGACY" + "\n" + "\n" + "CONFIGURACION ESPERADA: BIOS_MODE=UEFI", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         lblResult.ForeColor = Color.Red;
                         lblResult.Text = "TEST IMAGE: Revise configuracion: BIOS_MODE=UEFI";
@@ -1618,11 +1596,11 @@ namespace ImagesServer_v3._0
 
                 case "WIN10_P110":
 
-                    IMAGE_TO_INSTALL = _TestAndCustomOS._TestImageMisano_Estoril_Windows10_5801P110;
+                    Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageMisano_Estoril_Windows10_5801_P110;
 
                     if (Convert.ToInt32(value) != 2)
                     {
-                        lblImageName.Text = IMAGE_TO_INSTALL;
+                        lblImageName.Text = Globals.IMAGE_TO_INSTALL;
                         MessageBox.Show("La configuracion del Bios no es la correcta!" + "\n" + "\n" + "CONFIGURACION ACTUAL: BIOS_MODE=LEGACY" + "\n" + "\n" + "CONFIGURACION ESPERADA: BIOS_MODE=UEFI", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         lblResult.ForeColor = Color.Red;
                         lblResult.Text = "TEST IMAGE: Revise configuracion: BIOS_MODE=UEFI";
@@ -1640,8 +1618,9 @@ namespace ImagesServer_v3._0
             }
 
             //APPLY IMAGE FOUNDED IT
-            lblImageName.Text = IMAGE_TO_INSTALL;
-            _result = StaticJImgaeX.APPLY_RADSIMAGEX(ATM_IMAGES + "\"" + IMAGE_TO_INSTALL + "\"", "", Properties.Settings.Default._applyMode);
+            lblImageName.Text = Globals.IMAGE_TO_INSTALL;
+            //_result = StaticJImgaeX.APPLY_RADSIMAGEX(ATM_IMAGES + "\"" + Globals.IMAGE_TO_INSTALL + "\"", "", Properties.Settings.Default._applyMode);
+            _result = StaticJImgaeX.APPLY_RADSIMAGEX(Globals.IMAGE_TO_INSTALL + "\"", "", Properties.Settings.Default._applyMode);
 
 
             if (_result != 0)
@@ -1681,13 +1660,13 @@ namespace ImagesServer_v3._0
 
             using (StreamWriter sw = File.CreateText(_pathUnitInfo + "UnitInfo" + ".txt"))
             {
-                sw.WriteLine(_tracer);
-                sw.WriteLine(_ID);
+                sw.WriteLine(Globals.TRACER);
+                sw.WriteLine(Globals.USER_ID);
                 sw.Close();
             }
 
             //This function only apply for units that are Interactive Teller Machine ITM            
-            var ItemsFromITM = StaticFunctions.IsITM(_class, _mc);
+            var ItemsFromITM = StaticFunctions.IsITM(Globals.CLASS, Globals.MC);
             if (ItemsFromITM.Item1 && ItemsFromITM.Item2)
             {              
                 void SetupDisk()
@@ -1705,13 +1684,13 @@ namespace ImagesServer_v3._0
                 switch (_OS)
                 {
                     case "WIN7":
-                        lblImageName.Text = _TestAndCustomOS.ITM_Windows7;
-                        _dr = StaticJImgaeX.APPLY_JIMAGEX(2, _TestAndCustomOS.ITM_Windows7, "K:");
+                        lblImageName.Text = ATM_Images.ITM_Windows7;
+                        _dr = StaticJImgaeX.APPLY_JIMAGEX(2, ATM_Images.ITM_Windows7, "K:");
                         break;
 
                     case "WIN10":
-                        lblImageName.Text = _TestAndCustomOS.ITM_Windows10;
-                        _dr = StaticJImgaeX.APPLY_JIMAGEX(1, _TestAndCustomOS.ITM_Windows10, "K:");
+                        lblImageName.Text = ATM_Images.ITM_Windows10;
+                        _dr = StaticJImgaeX.APPLY_JIMAGEX(1, ATM_Images.ITM_Windows10, "K:");
                         break;
                 }
     
@@ -1742,46 +1721,31 @@ namespace ImagesServer_v3._0
         //FUNCTION TO INSTALL CUSTOM OS FOR SSCOS
         void InstallCustomOS()
         {
-            string IMAGE_TO_INSTALL = string.Empty;
-            string _buildtyp        = string.Empty;
-            string _tracer          = string.Empty;
-            string[] _InfoUnit      = { };
             int _result             = 0;
-            string _imageInstalled  = string.Empty;
             string _LOG             = string.Empty;
             string _Status          = string.Empty;
-            string _mainDisk        = string.Empty;
-            string _ejl             = string.Empty;
-            bool _isCompleteEjl     = false;
-            bool _buildTypeExist    = false;
-            string _dirUnitInfo     = @":\JABIL\UnitInfo\";
-            string _userFile        = @"\\mxchim0pangea01\AUTOMATION_SSCO\Config Files\Users.ini";
 
-            var items       = StaticFunctions.GetBuildType();
-            _buildtyp       = items.Item1;
-            _tracer         = items.Item2;
-            _mainDisk       = items.Item3;
-            _buildTypeExist = items.Item4;
+            bool _buildTypeExist = StaticFunctions.GetBuildType();;
 
-            _InfoUnit            = _iFactoryInfo.GetSCMC(_tracer);
-            string _serialNumber = _InfoUnit[0];
-            string _class        = _InfoUnit[1];
-            string _mc           = _InfoUnit[2];
+            string[] _InfoUnit            = new iFactoryInfo.iFactoryInfo().GetSCMC(Globals.TRACER);
+            Globals.WIP    = _InfoUnit[0];
+            Globals.CLASS  = _InfoUnit[1];
+            Globals.MC     = _InfoUnit[2];
 
             //UNIT INFO
-            lblTracer.Text = "TRACER: " + _tracer;
-            lblSN.Text     = "SERIAL NUMBER: " + _serialNumber;
-            lblClass.Text  = "CLASS: " + _class;
-            lblMC.Text     = "MC: " + _mc;
+            lblTracer.Text = "TRACER: " + Globals.TRACER;
+            lblSN.Text     = "SERIAL NUMBER: " + Globals.WIP;
+            lblClass.Text  = "CLASS: " + Globals.CLASS;
+            lblMC.Text     = "MC: " + Globals.MC;
 
 
             //EMPLOYE INFO
-            DirectoryInfo _dirInfo = new DirectoryInfo(_mainDisk + _dirUnitInfo);
+            DirectoryInfo _dirInfo = new DirectoryInfo(Globals.MAIN_DISK + Globals.PATH_UNIT_INFO);
             FileInfo[] _filesInfo  = _dirInfo.GetFiles();
             string[] _unitInfo     = File.ReadAllLines(_filesInfo[0].FullName);
 
             lblID.Text   = _unitInfo[1];
-            lblName.Text = ConfigFiles.reader("IMAGES_SERVER", _unitInfo[1], _userFile);
+            lblName.Text = ConfigFiles.reader("IMAGES_SERVER", _unitInfo[1], Globals.PATH_USER_FILE);
 
             if (!_buildTypeExist)
             {
@@ -1789,91 +1753,89 @@ namespace ImagesServer_v3._0
                 return;
             }
 
-            var _items2 = CheckEJL.IsCompleted_SSCOS(_mainDisk, _tracer);
-            _ejl = _items2.Item1;
-            _isCompleteEjl = _items2.Item2;
+            bool _isCompleteEjl = CheckEJL.IsCompleted_SSCOS(Globals.MAIN_DISK, Globals.TRACER);
 
-            //if (!_isCompleteEjl)
-            //{
-            //    MessageBox.Show("Unidad con log : " + _tracer + ".ejl" + " incompleto" + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    return;
-            //}
-
-            if (_buildtyp.Contains("POSREADY2009_32") || _buildtyp.Contains("POS_READY_2009"))
+            if (!_isCompleteEjl)
             {
-                IMAGE_TO_INSTALL = TestAndCustomOS._POSReady_2009;
+                MessageBox.Show("Unidad con log : " + Globals.TRACER + ".ejl" + " incompleto" + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (Globals.BUILD_TYPE.Contains("POSREADY2009_32") || Globals.BUILD_TYPE.Contains("POS_READY_2009"))
+            {
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._POSReady_2009;
                 goto FoundIt;             
             }
 
-            if (_buildtyp.Contains("WALMART_OS") || _buildtyp.Contains("WALMART_R6LITE_OS"))
-            {              
-                IMAGE_TO_INSTALL = TestAndCustomOS._WAL_R6LITE;
+            if (Globals.BUILD_TYPE.Contains("WALMART_OS") || Globals.BUILD_TYPE.Contains("WALMART_R6LITE_OS"))
+            {
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._WAL_R6LITE;
                 goto FoundIt;
             }
 
-            if (_buildtyp.Contains("POSREADY7_64"))
+            if (Globals.BUILD_TYPE.Contains("POSREADY7_64"))
             {
-                IMAGE_TO_INSTALL = TestAndCustomOS._POS7_64bit;
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._POS7_64bit;
                 goto FoundIt;
             }
 
-            if (_buildtyp.Contains("WINDOWS7PRO_32"))
+            if (Globals.BUILD_TYPE.Contains("WINDOWS7PRO_32"))
             {
-                IMAGE_TO_INSTALL = TestAndCustomOS._Windows7ProfessionalEmbedded32Bit;
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._Windows7ProfessionalEmbedded32Bit;
                 goto FoundIt;
             }
 
-            if (_buildtyp.Contains("WIN10_64") || _buildtyp.Contains("WIN10_64_VALUE") || _buildtyp.Contains("WIN10_64_ENTERPRISE"))
+            if (Globals.BUILD_TYPE.Contains("WIN10_64") || Globals.BUILD_TYPE.Contains("WIN10_64_VALUE") || Globals.BUILD_TYPE.Contains("WIN10_64_ENTERPRISE"))
             {
-                IMAGE_TO_INSTALL = TestAndCustomOS._XR7_XR6_Win10_IoT_64b_2016;
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._XR7_XR6_Win10_IoT_64b_2016;
                 goto FoundIt;
             }
 
-            if (_buildtyp.Contains("WIN7_PEOS_32"))
+            if (Globals.BUILD_TYPE.Contains("WIN7_PEOS_32"))
             {
-                IMAGE_TO_INSTALL = TestAndCustomOS._Windows7ProfessionalEmbedded32Bit;
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._Windows7ProfessionalEmbedded32Bit;
                 goto FoundIt;
             }
 
-            if (_buildtyp.Contains("WIN7_PEOS_64"))
+            if (Globals.BUILD_TYPE.Contains("WIN7_PEOS_64"))
             {
-                IMAGE_TO_INSTALL = TestAndCustomOS._XR7_XR6_Win7_PRO_EMBEDDED_64b;
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._XR7_XR6_Win7_PRO_EMBEDDED_64b;
                 goto FoundIt;
             }
 
-            if (_buildtyp.Contains("WIN10_EEOS_64"))
+            if (Globals.BUILD_TYPE.Contains("WIN10_EEOS_64"))
             {
-                IMAGE_TO_INSTALL = TestAndCustomOS._XR7_XR6_Win10_IoT_64b_2016;
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._XR7_XR6_Win10_IoT_64b_2016;
                 goto FoundIt;
             }
 
-            if (_buildtyp.Contains("POSREADY7_32") && !_buildtyp.Contains("SKYLAKE"))
+            if (Globals.BUILD_TYPE.Contains("POSREADY7_32") && !Globals.BUILD_TYPE.Contains("SKYLAKE"))
             {
-                IMAGE_TO_INSTALL = TestAndCustomOS._POSReady7_32bit;
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._POSReady7_32bit;
                 goto FoundIt;
             }
 
-            if (_buildtyp.Contains("POSREADY7_32") && _buildtyp.Contains("SKYLAKE"))
+            if (Globals.BUILD_TYPE.Contains("POSREADY7_32") && Globals.BUILD_TYPE.Contains("SKYLAKE"))
             {
-                IMAGE_TO_INSTALL = TestAndCustomOS._POSREADY7Skylake;
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._POSREADY7Skylake;
                 goto FoundIt;
             }
 
-            if (_buildtyp.Contains("POS_READY_7EMB"))
+            if (Globals.BUILD_TYPE.Contains("POS_READY_7EMB"))
             {
-                IMAGE_TO_INSTALL = TestAndCustomOS._POSReady7_32bit;
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._POSReady7_32bit;
                 goto FoundIt;
             }
 
-            if (_buildtyp.Contains("WIN10IOT_64") && _buildtyp.Contains("SKYLAKE"))
+            if (Globals.BUILD_TYPE.Contains("WIN10IOT_64") && Globals.BUILD_TYPE.Contains("SKYLAKE"))
             {
-                IMAGE_TO_INSTALL = TestAndCustomOS._7607_7703_Retail_Win10IoT_2019;
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._7607_7703_Retail_Win10IoT_2019;
                 goto FoundIt;
             }
 
-            if (_buildtyp.Contains("WIN10IOT_64"))
+            if (Globals.BUILD_TYPE.Contains("WIN10IOT_64"))
             {
-                IMAGE_TO_INSTALL = TestAndCustomOS._7702_7603_Retail_Win10IoT_2019;
+                Globals.IMAGE_TO_INSTALL = TestAndCustomOS._7702_7603_Retail_Win10IoT_2019;
                 goto FoundIt;
             }
 
@@ -1883,9 +1845,8 @@ namespace ImagesServer_v3._0
 
             FoundIt:
             {
-                _imageInstalled = IMAGE_TO_INSTALL;
-                lblImageName.Text = "IMAGE: " + IMAGE_TO_INSTALL;
-                _result = StaticJImgaeX.APPLY_RADSIMAGEX(SSSCO_IMAGES_02 + "\"" + IMAGE_TO_INSTALL + "\"", "", Properties.Settings.Default._applyMode);
+                lblImageName.Text = "IMAGE: " + Globals.IMAGE_TO_INSTALL;
+                _result = StaticJImgaeX.APPLY_RADSIMAGEX(Globals.IMAGE_TO_INSTALL, "", Properties.Settings.Default._applyMode);
             }
 
 
@@ -1893,11 +1854,11 @@ namespace ImagesServer_v3._0
             {
                 _Status = "PASS";
 
-                _LOG = "TRACER=" + _tracer + "\n" +
+                _LOG = "TRACER=" + Globals.TRACER + "\n" +
                        "DATE=" + DateTime.Now.ToString() + "\n" +
-                       "CUSTOM_OS=" + _imageInstalled + "\n" +
+                       "CUSTOM_OS=" + Globals.IMAGE_TO_INSTALL + "\n" +
                        "STATUS=" + _Status + "\n" +
-                       _buildtyp;
+                       Globals.BUILD_TYPE;
 
                 lblResult.ForeColor = Color.Green;
                 lblResult.Text = "CUSTOM OS: YA PUEDE DESCONECTAR LA UNIDAD!";
@@ -1908,11 +1869,11 @@ namespace ImagesServer_v3._0
             if (_result != 0)
             {
                 _Status = "FAIL";
-                _LOG = "TRACER=" + _tracer + "\n" +
+                _LOG = "TRACER=" + Globals.TRACER + "\n" +
                        "DATE=" + DateTime.Now.ToString() + "\n" +
-                       "CUSTOM_OS=" + _imageInstalled + "\n" +
+                       "CUSTOM_OS=" + Globals.IMAGE_TO_INSTALL + "\n" +
                        "STATUS=" + _Status + "\n" +
-                       _buildtyp;
+                       Globals.BUILD_TYPE;
 
                 lblResult.ForeColor = Color.Red;
                 lblResult.Text = "CUSTOM OS: No ha sido instalada correctamente...";
@@ -1933,7 +1894,7 @@ namespace ImagesServer_v3._0
             }
 
             //create a backup logs in \\mxchim0pangea01\ssco_images\Logs\images\
-            using (StreamWriter sw = File.CreateText(outputPath + _tracer + "_" + DateTime.Now.Year + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second + ".txt"))
+            using (StreamWriter sw = File.CreateText(outputPath + Globals.TRACER + "_" + DateTime.Now.Year + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second + ".txt"))
             {
                 _LOG = _LOG.Replace("\n", Environment.NewLine);
                 sw.WriteLine(_LOG);
@@ -1941,14 +1902,148 @@ namespace ImagesServer_v3._0
             }
 
             //create a log in \\mxchim0pangea01\SSCO_IMAGESLogs\ to report ifactory step
-            using (StreamWriter sw = File.CreateText(reportLog + _tracer + "_" + DateTime.Now.Year + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second + ".txt"))
+            using (StreamWriter sw = File.CreateText(reportLog + Globals.TRACER + "_" + DateTime.Now.Year + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second + ".txt"))
             {
                 _LOG = _LOG.Replace("\n", Environment.NewLine);
                 sw.WriteLine(_LOG);
                 sw.Close();
             }
 
-            Flag_Trilight.SEND_TARS(_tracer, DateTime.Now, "BU Arrival", "RESOURCE=SBUTT01TE01", @"\\mxchim0pangea01\AUTOMATION_SSCO\TRILIGHT\InProcess\");
+            Flag_Trilight.SEND_TARS(Globals.TRACER, DateTime.Now, "BU Arrival", "RESOURCE=SBUTT01TE01", @"\\mxchim0pangea01\AUTOMATION_SSCO\TRILIGHT\InProcess\");
+        }
+
+        void InstallCustomOS_2021()
+        {
+            int _result = 0;
+            string _LOG = string.Empty;
+            string _Status = string.Empty;
+
+            bool _buildTypeExist = StaticFunctions.GetBuildType();
+
+            string[] _InfoUnit = new iFactoryInfo.iFactoryInfo().GetSCMC(Globals.TRACER);
+            Globals.WIP = _InfoUnit[0];
+            Globals.CLASS = _InfoUnit[1];
+            Globals.MC = _InfoUnit[2];
+
+            //UNIT INFO
+            lblTracer.Text = "TRACER: " + Globals.TRACER;
+            lblSN.Text = "SERIAL NUMBER: " + Globals.WIP;
+            lblClass.Text = "CLASS: " + Globals.CLASS;
+            lblMC.Text = "MC: " + Globals.MC;
+
+            //EMPLOYE INFO
+            DirectoryInfo _dirInfo = new DirectoryInfo(Globals.MAIN_DISK + Globals.PATH_UNIT_INFO);
+            FileInfo[] _filesInfo = _dirInfo.GetFiles();
+            string[] _unitInfo = File.ReadAllLines(_filesInfo[0].FullName);
+
+            lblID.Text = _unitInfo[1];
+            lblName.Text = ConfigFiles.reader("IMAGES_SERVER", _unitInfo[1], Globals.PATH_USER_FILE);
+
+            if (!_buildTypeExist)
+            {
+                MessageBox.Show("Unidad sin build.typ : " + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            bool _isCompleteEjl = CheckEJL.IsCompleted_SSCOS(Globals.MAIN_DISK, Globals.TRACER);
+
+            if (!_isCompleteEjl)
+            {
+                MessageBox.Show("Unidad con log : " + Globals.TRACER + ".ejl" + " incompleto" + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            List<string> AllCustomOS = SSCO_Images.CustomOS;
+            string[] _content = File.ReadAllLines(Globals.PATH_FEATURES + "feat" + Globals.CLASS);
+
+            foreach (string _line in _content)
+            {
+                if (_line.Contains(Globals.CLASS + "-MC" + Globals.MC))
+                {
+                    foreach (string CustomOS in AllCustomOS)
+                    {
+                        if (_line.Contains(CustomOS))
+                        {
+                            Globals.IMAGE_TO_INSTALL = ConfigFiles.reader("CUSTOM_OS_SSCO", CustomOS, Globals.PATH_TEST_CUSTOMOS);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(Globals.IMAGE_TO_INSTALL)) goto FoundIt;
+            
+            lblImageName.Text = "";
+            MessageBox.Show("NO SE HA ENCONTRADO IMAGEN CUSTOM OS PARA ESTA UNIDAD." + "\n" + "\n" + "\n" + "CONTACTA A INGENIERIA DE PRUEBAS!", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+
+        FoundIt:
+            {
+                lblImageName.Text = "IMAGE: " + Globals.IMAGE_TO_INSTALL;
+                _result = StaticJImgaeX.APPLY_RADSIMAGEX(Globals.IMAGE_TO_INSTALL, "", Properties.Settings.Default._applyMode);
+            }
+
+
+            if (_result == 0)
+            {
+                _Status = "PASS";
+                _LOG = "TRACER=" + Globals.TRACER + "\n" +
+                       "DATE=" + DateTime.Now.ToString() + "\n" +
+                       "CUSTOM_OS=" + Globals.IMAGE_TO_INSTALL.Replace("\"",string.Empty)+ "\n" +
+                       "STATUS=" + _Status + "\n" +
+                       Globals.BUILD_TYPE;
+
+                lblResult.ForeColor = Color.Green;
+                lblResult.Text = "CUSTOM OS: YA PUEDE DESCONECTAR LA UNIDAD!";
+                pBoxStatus.Visible = true;
+                pBoxStatus.Image = Properties.Resources.GoodMark;
+            }
+
+            if (_result != 0)
+            {
+                _Status = "FAIL";
+                _LOG = "TRACER=" + Globals.TRACER + "\n" +
+                       "DATE=" + DateTime.Now.ToString() + "\n" +
+                       "CUSTOM_OS=" + Globals.IMAGE_TO_INSTALL.Replace("\"", string.Empty) + "\n" +
+                       "STATUS=" + _Status + "\n" +
+                       Globals.BUILD_TYPE;
+
+                lblResult.ForeColor = Color.Red;
+                lblResult.Text = "CUSTOM OS: No ha sido instalada correctamente...";
+                pBoxStatus.Visible = true;
+                pBoxStatus.Image = Properties.Resources.BadMark;
+            }
+
+
+            string outputPath = "";
+            string reportLog = @"\\mxchim0pangea01\SSCO_IMAGESLogs\";
+            string _LOG_DIR_BK = @"\\MXCHIM0PANGEA01\SSCO_IMAGES\logs\Images\";
+            outputPath = _LOG_DIR_BK + DateTime.Now.ToString("MM_yyyy_dd") + @"\" + DateTime.Now.ToString("HH") + @"\";
+            DirectoryInfo DirInfo = new DirectoryInfo(outputPath);
+
+            if (!DirInfo.Exists)
+            {
+                DirInfo.Create();
+            }
+
+            //create a backup logs in \\mxchim0pangea01\ssco_images\Logs\images\
+            using (StreamWriter sw = File.CreateText(outputPath + Globals.TRACER + "_" + DateTime.Now.Year + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second + ".txt"))
+            {
+                _LOG = _LOG.Replace("\n", Environment.NewLine);
+                sw.WriteLine(_LOG);
+                sw.Close();
+            }
+
+            //create a log in \\mxchim0pangea01\SSCO_IMAGESLogs\ to report ifactory step
+            using (StreamWriter sw = File.CreateText(reportLog + Globals.TRACER + "_" + DateTime.Now.Year + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second + ".txt"))
+            {
+                _LOG = _LOG.Replace("\n", Environment.NewLine);
+                sw.WriteLine(_LOG);
+                sw.Close();
+            }
+
+            Flag_Trilight.SEND_TARS(Globals.TRACER, DateTime.Now, "BU Arrival", "RESOURCE=SBUTT01TE01", @"\\mxchim0pangea01\AUTOMATION_SSCO\TRILIGHT\InProcess\");
         }
 
         void TemporalFunctionForITM()
@@ -1990,17 +2085,14 @@ namespace ImagesServer_v3._0
 
             using (WaitWin waitWin = new WaitWin(Command, "DISKPART COMMANDS")) waitWin.ShowDialog();
 
-           
+          
+            //JIMAGEX = new ImageXGUI(ImageXGUI.ApplyOrCapture.Apply, 1, SSSCO_IMAGES_02 + _TestAndCustomOS._TestImage7703, "D:", OpenFlags.None, ExtractFlags.Ntfs);
+            //JIMAGEX.ShowDialog();
 
-            JIMAGEX = new ImageXGUI(ImageXGUI.ApplyOrCapture.Apply, 1, SSSCO_IMAGES_02 + _TestAndCustomOS._TestImage7703, "D:", OpenFlags.None, ExtractFlags.Ntfs);
-            JIMAGEX.ShowDialog();
 
-
-            JIMAGEX = new ImageXGUI(ImageXGUI.ApplyOrCapture.Apply, 2, SSSCO_IMAGES_02 + _TestAndCustomOS._TestImage7703, "C:", OpenFlags.None, ExtractFlags.Ntfs);
-            JIMAGEX.ShowDialog();
+            //JIMAGEX = new ImageXGUI(ImageXGUI.ApplyOrCapture.Apply, 2, SSSCO_IMAGES_02 + _TestAndCustomOS._TestImage7703, "C:", OpenFlags.None, ExtractFlags.Ntfs);
+            //JIMAGEX.ShowDialog();
        
-
-
             //JIMAGEX = new ImageXGUI(ImageXGUI.ApplyOrCapture.Apply, 1, ATM_IMAGES + _TestImageEstoril_Windows10, "F:", OpenFlags.CheckIntegrity, ExtractFlags.None);
             //JIMAGEX.ShowDialog();
 

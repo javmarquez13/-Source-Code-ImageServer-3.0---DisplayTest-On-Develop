@@ -10,25 +10,7 @@ namespace ImagesServer_v3._0
     class TestAndCustomOS
     {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        //LOGICA VIEJA TODO SE MIGRO A ATM_Images y SSCO_Images
         public static string _POSREADY7Skylake => "POS Ready 7 (32 Bit) XR7 Plus Compatible Skylake D370-1038-0100_01.00.00.02.wim";
         public static string _POS7_64bit => "POS7_64bit.wim"; 
         public static string _POSReady_2009 => "POSReady_2009.wim";
@@ -62,24 +44,24 @@ namespace ImagesServer_v3._0
 
         public void GettingImages()
         {
-            ConfigFiles _ConfigFiles = new ConfigFiles();
-            string _configPath = @"\\mxchim0pangea01\AUTOMATION_SSCO\IMAGES_SERVER_2.0\ConfigFile\SetupTestImages.ini";
-            _TestImage7703 = ConfigFiles.reader("SSCO", "TestImage7703", _configPath);
-            _TestImage7702 = ConfigFiles.reader("SSCO", "TestImage7702", _configPath);
-            _TestImage7358 = ConfigFiles.reader("SSCO", "TestImage7358", _configPath);
-            _TestImage7362 = ConfigFiles.reader("SSCO", "TestImage7362", _configPath);
-            _TestImage7350R6L = ConfigFiles.reader("SSCO", "TestImage7350R6L", _configPath);
-            _TestImage7350R5 = ConfigFiles.reader("SSCO", "TestImage7350R5", _configPath);
+            //ConfigFiles _ConfigFiles = new ConfigFiles();
+            //string _configPath = @"\\mxchim0pangea01\AUTOMATION_SSCO\IMAGES_SERVER_2.0\ConfigFile\SetupTestImages.ini";
+            //_TestImage7703 = ConfigFiles.reader("SSCO", "TestImage7703");
+            //_TestImage7702 = ConfigFiles.reader("SSCO", "TestImage7702");
+            //_TestImage7358 = ConfigFiles.reader("SSCO", "TestImage7358");
+            //_TestImage7362 = ConfigFiles.reader("SSCO", "TestImage7362");
+            //_TestImage7350R6L = ConfigFiles.reader("SSCO", "TestImage7350R6L");
+            //_TestImage7350R5 = ConfigFiles.reader("SSCO", "TestImage7350R5");
 
-            _TestImageEstoril_Windows7 = ConfigFiles.reader("ATM", "TestImageEstoril_Windows7", _configPath);
-            _TestImageEstoril_Windows10 = ConfigFiles.reader("ATM", "TestImageEstoril_Windows10", _configPath);
-            _TestImageMisano_Windows7 = ConfigFiles.reader("ATM", "TestImageMisano_Windows7", _configPath);
-            _TestImageMisano_Windows10 = ConfigFiles.reader("ATM", "TestImageMisano_Windows10", _configPath);
-            _TestImageMisano_Estoril_Windows10_5801P110 = ConfigFiles.reader("ATM", "TestImageMisano_Estoril_Windows10_5801-P110", _configPath);
-            _TestImageKabyLake_Windows10 = ConfigFiles.reader("ATM", "TestImageKabyLake_Windows10", _configPath);
+            //_TestImageEstoril_Windows7 = ConfigFiles.reader("ATM", "TestImageEstoril_Windows7");
+            //_TestImageEstoril_Windows10 = ConfigFiles.reader("ATM", "TestImageEstoril_Windows10");
+            //_TestImageMisano_Windows7 = ConfigFiles.reader("ATM", "TestImageMisano_Windows7");
+            //_TestImageMisano_Windows10 = ConfigFiles.reader("ATM", "TestImageMisano_Windows10");
+            //_TestImageMisano_Estoril_Windows10_5801P110 = ConfigFiles.reader("ATM", "TestImageMisano_Estoril_Windows10_5801-P110");
+            //_TestImageKabyLake_Windows10 = ConfigFiles.reader("ATM", "TestImageKabyLake_Windows10");
 
-            ITM_Windows7 = ConfigFiles.reader("ITM", "ITM_Windows7", _configPath);
-            ITM_Windows10 = ConfigFiles.reader("ITM", "ITM_Windows10", _configPath);
+            //ITM_Windows7 = ConfigFiles.reader("ITM", "ITM_Windows7");
+            //ITM_Windows10 = ConfigFiles.reader("ITM", "ITM_Windows10");
         }  
     }
 }

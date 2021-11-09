@@ -40,8 +40,12 @@ namespace ImagesServer_v3._0
         private void btnPassword_Click(object sender, EventArgs e)
         {
           
-            if (txtPassword.Text == "Admin2021" || txtPassword.Text == "2021")
+            if (txtPassword.Text == "Admin2021" || txtPassword.Text == "2021") 
+            {
+                Globals.IS_ADMIN = true;
                 DialogResult = DialogResult.OK;
+            }
+                
             else
                 DialogResult = DialogResult.Abort;
         }

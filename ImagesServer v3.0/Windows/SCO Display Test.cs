@@ -15,12 +15,6 @@ namespace ImagesServer_v3._0
 {
     public partial class SCODisplayTest : Form
     {
-        public string _class { get; set; }
-        public string _serialNumber { get; set; }
-        public string _mc { get; set; }
-        public string _tracer { get; set; }
-        public string _ID { get; set; }
-        public string _Name { get; set; }
         bool _testPass = true;
 
         string _CPUType;
@@ -87,15 +81,7 @@ namespace ImagesServer_v3._0
 
         private void SCODisplayTest_Load(object sender, EventArgs e)
         {
-            _class        = Form1._class;
-            _serialNumber = Form1._serialNumber;
-            _mc           = Form1._mc;
-            _tracer       = Form1._tracer;
-            _ID           = Form1._ID;
-            _Name         = Form1._Name;
-
-
-            txtScaneo.Text = _tracer;
+            txtScaneo.Text = Globals.TRACER;
             this.Refresh();
             txtScaneo_KeyDown(sender, new KeyEventArgs(Keys.Enter));
         }
@@ -115,12 +101,12 @@ namespace ImagesServer_v3._0
 
         void MainFunction()
         {
-            string[] _Features = StaticFunctions.GetFeatsString(_class, _mc);
-            string _featString = string.Join(_class, _Features);
+            string[] _Features = StaticFunctions.GetFeatsString(Globals.CLASS, Globals.MC);
+            string _featString = string.Join(Globals.CLASS, _Features);
 
             WriteDGV(_testPass, DateTime.Now, "FEATURES", _featString, "", "");
 
-            List<string> _buildTyp = StaticFunctions.GetFeatsDecription(_class, _Features);
+            List<string> _buildTyp = StaticFunctions.GetFeatsDecription(Globals.CLASS, _Features);
 
 
             foreach (string Feat in _buildTyp)
@@ -273,26 +259,30 @@ namespace ImagesServer_v3._0
 
             #region MATCH MAC ADRESS
             _macAdress = CheckWMIValue(@"ROOT\\CIMV2", @"Select * FROM Win32_NetworkAdapterConfiguration where IPEnabled=true", "MACAddress");
-            new SendAttributes.SendAttributes().SendAttributesToiFactory("BASE-BOARD MAC-ADRESS", _macAdress, _serialNumber);
+            new SendAttributes.SendAttributes().SendAttributesToiFactory("BASE-BOARD MAC-ADRESS", _macAdress, Globals.WIP);
             WriteDGV(_testPass, DateTime.Now, "MAC ADRESS", _macAdress, "", "");
 
             _ProductBaseBoard = GetProductBaseBoard;
-            new SendAttributes.SendAttributes().SendAttributesToiFactory("BASE-BOARD PRODUCT", _ProductBaseBoard, _serialNumber);
+            new SendAttributes.SendAttributes().SendAttributesToiFactory("BASE-BOARD PRODUCT", _ProductBaseBoard, Globals.WIP);
             WriteDGV(_testPass, DateTime.Now, "PRODUCT", _ProductBaseBoard, "", "");
 
 
             _SNBaseBoard = GetSNBaseBoard;
-            new SendAttributes.SendAttributes().SendAttributesToiFactory("BASE-BOARD SERIAL NUMBER", _SNBaseBoard, _serialNumber);
+            new SendAttributes.SendAttributes().SendAttributesToiFactory("BASE-BOARD SERIAL NUMBER", _SNBaseBoard, Globals.WIP);
             WriteDGV(_testPass, DateTime.Now, "SERIAL NUMBER", _SNBaseBoard, "", "");
             #endregion
 
             End:
             {
-                if (!_testPass) WriteDGV(_testPass, DateTime.Now, "TEST FAIL", "ENSAMBLE INCORRECTO", "", "");
+                if (!_testPass) 
+                {
+                    WriteDGV(_testPass, DateTime.Now, "TEST FAIL", "ENSAMBLE INCORRECTO", "", "");
+                    Globals.TRACER = string.Empty;
+                }
                 if (_testPass)
                 {
                     WriteDGV(_testPass, DateTime.Now, "TEST PASS", "ENSAMBLE CORRECTO", "", "");
-                    System.Threading.Thread.Sleep(5000);
+                    System.Threading.Thread.Sleep(1000);
                     DialogResult = DialogResult.OK;
                 }
                 

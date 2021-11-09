@@ -18,10 +18,9 @@ namespace ImagesServer_v3._0
 {
     class StaticFunctions
     {
-        public static Tuple<string, string, string, bool> GetBuildType()
+        public static bool GetBuildType()
         {
             string _buildTypeDir = "";
-            string _MainDisk = "";
             bool _buildTypeExist = false;
 
             string _buildtypeDirA = @"A:\build.typ";
@@ -46,16 +45,14 @@ namespace ImagesServer_v3._0
             if (File.Exists(_buildtypeDirJ)) _buildTypeDir = _buildtypeDirJ;
 
 
-            string _buildTypeFeats = "";
             string[] _buildTypeArray = { "" };
-            string _tracer = "";
 
             try
             {
-                _MainDisk = _buildTypeDir.Substring(0, 1);
-                _buildTypeFeats = File.ReadAllText(_buildTypeDir);
+                Globals.MAIN_DISK = _buildTypeDir.Substring(0, 1);
+                Globals.BUILD_TYPE = File.ReadAllText(_buildTypeDir);
                 _buildTypeArray = File.ReadAllLines(_buildTypeDir);
-                _tracer = _buildTypeArray[0];
+                Globals.TRACER = _buildTypeArray[0];
                 _buildTypeExist = true;
             }
             catch (Exception)
@@ -63,7 +60,7 @@ namespace ImagesServer_v3._0
                 _buildTypeExist = false;
             }
 
-            return Tuple.Create(_buildTypeFeats, _tracer, _MainDisk, _buildTypeExist);
+            return _buildTypeExist;
         }
 
         public static Tuple<string, bool> GetOS(string _class, string _mc)
@@ -304,7 +301,7 @@ namespace ImagesServer_v3._0
             string _iniFile = @"\\mxchim0pangea01\AUTOMATION_SSCO\IMAGES_SERVER_2.0\ConfigFile\SetupTestImages.ini";
             string _strIniFile = File.ReadAllText(_iniFile);
 
-            _ITMActive = Convert.ToBoolean(ConfigFiles.reader("ITM", "ITM_ACTIVE", _iniFile));
+            _ITMActive = Convert.ToBoolean(ConfigFiles.reader("ITM", "ITM_ACTIVE", Globals.PATH_TEST_CUSTOMOS));
 
             string[] _splitStrIniFile = _strIniFile.Split(new string[] {"[ITM_FEATURES]"}, StringSplitOptions.RemoveEmptyEntries);
             string[] _ITMFeatures = _splitStrIniFile[1].Split(new string[] {"\n"}, StringSplitOptions.RemoveEmptyEntries).Where(x => x != "\r").ToArray();
