@@ -35,7 +35,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>\\Mxchim0pangea01\automation_ssco\IMAGES_SERVER_2.0\Debug2\</OutputPath>
+    <OutputPath>\\Mxchim0pangea01\automation_ssco\IMAGES_SERVER_2.0\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -100,6 +100,12 @@
     <Compile Include="Clases\DesignGlobals.cs" />
     <Compile Include="Clases\Globals.cs" />
     <Compile Include="Clases\SSCO_Images.cs" />
+    <Compile Include="SCO Incomming Validation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SCO Incomming Validation.Designer.cs">
+      <DependentUpon>SCO Incomming Validation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SCO Display Test.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +161,9 @@
     <Compile Include="Windows\winTracer.Designer.cs">
       <DependentUpon>winTracer.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SCO Incomming Validation.resx">
+      <DependentUpon>SCO Incomming Validation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\SCO Display Test.resx">
       <DependentUpon>SCO Display Test.cs</DependentUpon>
     </EmbeddedResource>

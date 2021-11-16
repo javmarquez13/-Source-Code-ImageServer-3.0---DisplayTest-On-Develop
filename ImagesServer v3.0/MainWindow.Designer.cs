@@ -245,7 +245,7 @@
             this.panel20.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(29)))), ((int)(((byte)(37)))));
-            this.panel20.Location = new System.Drawing.Point(-2, 1152);
+            this.panel20.Location = new System.Drawing.Point(-2, 1331);
             this.panel20.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel20.Name = "panel20";
             this.panel20.Size = new System.Drawing.Size(1354, 62);
@@ -264,7 +264,7 @@
             this.tabPage5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage5.Size = new System.Drawing.Size(1336, 824);
+            this.tabPage5.Size = new System.Drawing.Size(1336, 929);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "NETWOR KDRIVES";
             // 
@@ -638,7 +638,7 @@
             this.tabPage4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage4.Size = new System.Drawing.Size(1336, 824);
+            this.tabPage4.Size = new System.Drawing.Size(1336, 929);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "APPLY";
             // 
@@ -1015,7 +1015,7 @@
             this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage3.Size = new System.Drawing.Size(1336, 824);
+            this.tabPage3.Size = new System.Drawing.Size(1336, 929);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "CAPTURE";
             // 
@@ -1334,7 +1334,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(1336, 824);
+            this.tabPage1.Size = new System.Drawing.Size(1336, 929);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "PRODUCCION";
             // 
@@ -1346,7 +1346,7 @@
             this.btnCustomOS_sscos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCustomOS_sscos.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCustomOS_sscos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(173)))), ((int)(((byte)(157)))));
-            this.btnCustomOS_sscos.Location = new System.Drawing.Point(748, 682);
+            this.btnCustomOS_sscos.Location = new System.Drawing.Point(757, 780);
             this.btnCustomOS_sscos.Margin = new System.Windows.Forms.Padding(16, 18, 16, 18);
             this.btnCustomOS_sscos.Name = "btnCustomOS_sscos";
             this.btnCustomOS_sscos.Size = new System.Drawing.Size(300, 115);
@@ -1362,7 +1362,7 @@
             this.panel_3.Controls.Add(this.label23);
             this.panel_3.Controls.Add(this.label26);
             this.panel_3.Controls.Add(this.lblResult);
-            this.panel_3.Location = new System.Drawing.Point(18, 369);
+            this.panel_3.Location = new System.Drawing.Point(18, 474);
             this.panel_3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.panel_3.Name = "panel_3";
             this.panel_3.Size = new System.Drawing.Size(934, 123);
@@ -1374,7 +1374,7 @@
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label23.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label23.Location = new System.Drawing.Point(14, 79);
+            this.label23.Location = new System.Drawing.Point(14, 78);
             this.label23.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(82, 20);
@@ -1518,7 +1518,7 @@
             this.panel_2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(45)))), ((int)(((byte)(54)))));
             this.panel_2.Controls.Add(this.lblBaseBoard);
             this.panel_2.Controls.Add(this.lblImageName);
-            this.panel_2.Location = new System.Drawing.Point(18, 245);
+            this.panel_2.Location = new System.Drawing.Point(18, 349);
             this.panel_2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.panel_2.Name = "panel_2";
             this.panel_2.Size = new System.Drawing.Size(934, 97);
@@ -1555,7 +1555,7 @@
             // 
             this.pBoxStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pBoxStatus.Image = global::ImagesServer_v3._0.Properties.Resources.GoodMark;
-            this.pBoxStatus.Location = new System.Drawing.Point(975, 245);
+            this.pBoxStatus.Location = new System.Drawing.Point(975, 349);
             this.pBoxStatus.Margin = new System.Windows.Forms.Padding(112, 12, 112, 12);
             this.pBoxStatus.Name = "pBoxStatus";
             this.pBoxStatus.Size = new System.Drawing.Size(255, 223);
@@ -1572,7 +1572,7 @@
             this.btnTestImage_sscos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTestImage_sscos.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnTestImage_sscos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(173)))), ((int)(((byte)(157)))));
-            this.btnTestImage_sscos.Location = new System.Drawing.Point(230, 682);
+            this.btnTestImage_sscos.Location = new System.Drawing.Point(234, 780);
             this.btnTestImage_sscos.Margin = new System.Windows.Forms.Padding(16, 18, 16, 18);
             this.btnTestImage_sscos.Name = "btnTestImage_sscos";
             this.btnTestImage_sscos.Size = new System.Drawing.Size(300, 115);
@@ -1599,7 +1599,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(0, 0);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1344, 857);
+            this.tabControl1.Size = new System.Drawing.Size(1344, 962);
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl1.TabIndex = 13;
             // 
@@ -1616,7 +1616,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1336, 824);
+            this.tabPage2.Size = new System.Drawing.Size(1336, 929);
             this.tabPage2.TabIndex = 5;
             this.tabPage2.Text = "DISKPART";
             // 
@@ -2026,7 +2026,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(29)))), ((int)(((byte)(37)))));
-            this.ClientSize = new System.Drawing.Size(1352, 968);
+            this.ClientSize = new System.Drawing.Size(1352, 1058);
             this.Controls.Add(this.btnTab5);
             this.Controls.Add(this.btnTab4);
             this.Controls.Add(this.btnTab3);

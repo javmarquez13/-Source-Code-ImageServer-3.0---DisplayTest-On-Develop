@@ -298,10 +298,10 @@ namespace ImagesServer_v3._0
             string _FeatureFind = string.Empty;
             string _FeatFileName = "feat" + _class;
             string _dirFeatures = @"\\mxchim0pangea01\diskbld\feats\";
-            string _iniFile = @"\\mxchim0pangea01\AUTOMATION_SSCO\IMAGES_SERVER_2.0\ConfigFile\SetupTestImages.ini";
+            string _iniFile = @"\\mxchim0pangea01\AUTOMATION_SSCO\IMAGES_SERVER_2.0\ConfigFile\TestCustomOS.ini";//se agrega testcustom.ini
             string _strIniFile = File.ReadAllText(_iniFile);
 
-            _ITMActive = Convert.ToBoolean(ConfigFiles.reader("ITM", "ITM_ACTIVE", Globals.PATH_TEST_CUSTOMOS));
+            _ITMActive = ATM_Images.ITM_ACTIVE;
 
             string[] _splitStrIniFile = _strIniFile.Split(new string[] {"[ITM_FEATURES]"}, StringSplitOptions.RemoveEmptyEntries);
             string[] _ITMFeatures = _splitStrIniFile[1].Split(new string[] {"\n"}, StringSplitOptions.RemoveEmptyEntries).Where(x => x != "\r").ToArray();

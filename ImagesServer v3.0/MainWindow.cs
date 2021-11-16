@@ -420,6 +420,7 @@ namespace ImagesServer_v3._0
     /// NOVEMBER 8th
     /// NEW LOGIC TO INSTALL CUSTOM OS FROM CONFIGURABLE INI FILE  TestCustomOS.ini
     /// NEW LOGIC TO GET COMPLTE PATH FROM INI FILE TestCustomOS.ini
+    /// REMOVE QUATE MARKS IN LOG TO IFACTORY DUE TO IFACTORY CAN'T RECOGNIZE THIS SPECIAL CHARACTER
     /// 3.0.0.4
 
 
@@ -435,7 +436,7 @@ namespace ImagesServer_v3._0
             InitializeComponent();
             RoundObjects();
             //label with the application version.
-            _version = "v3.0.0.4";
+            _version = "v3.0.0.5";
             lblVersion.Text = _version;
         }
 
@@ -641,7 +642,7 @@ namespace ImagesServer_v3._0
             //Disable button while the function is running
             btnCustomOS_sscos.Enabled = false;
 
-            //InstallCustomOS();
+           // InstallCustomOS();
             InstallCustomOS_2021();
 
             //Enable button when the function will be completed
@@ -1367,7 +1368,7 @@ namespace ImagesServer_v3._0
 
             if (Globals.BASE_BOARD == "Richmond" && Globals.CLASS == "7358" || Globals.BASE_BOARD == "Richmond" && Globals.CLASS == "7360")
             {
-                Globals.IMAGE_TO_INSTALL = SSCO_Images.TestImage7703;            
+                Globals.IMAGE_TO_INSTALL = SSCO_Images.TestImage7703;
                 goto FoundIt;
             }
 
@@ -1522,15 +1523,15 @@ namespace ImagesServer_v3._0
         //FUNCTION TO INSTALL TEST IMAGE FOR ATMS
         void InstallTestImageATM()
         {
-            string _OS              = string.Empty;
-            bool _flag              = false;
-            int _result             = 0;
+            string _OS = string.Empty;
+            bool _flag = false;
+            int _result = 0;
             //bool _ITM             = false;
-            string _BaseBoard       = string.Empty;
-            bool _MisanoFeature     = false;
-            string result           = string.Empty;
+            string _BaseBoard = string.Empty;
+            bool _MisanoFeature = false;
+            string result = string.Empty;
             //int _result           = 0;
-            DialogResult _dr        = DialogResult.Abort;
+            DialogResult _dr = DialogResult.Abort;
 
 
             _flag = UnitInfoFromIfactory();
@@ -1541,22 +1542,22 @@ namespace ImagesServer_v3._0
 
             var items2 = StaticFunctions.GetOS(Globals.CLASS, Globals.MC);
 
-            _OS            = items2.Item1;
+            _OS = items2.Item1;
             _MisanoFeature = items2.Item2;
 
             object value = StaticFunctions.PEFirmwareType(); //Function to review the BIOS CONFIGURATION 1=LEGACY 2=UEFI
 
             switch (_OS)
-            {
-                case "WIN7":
+           {
+               case "WIN7":
 
-                    if (_BaseBoard == "Estoril" && !_MisanoFeature)
+                    if (Globals.BASE_BOARD == "Estoril" && !_MisanoFeature)
                         Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageEstoril_Windows7;
-
-                    if (_BaseBoard == "Misano" && _MisanoFeature)
+                      
+                    if (Globals.BASE_BOARD == "Misano" && _MisanoFeature)
                         Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageMisano_Windows7;
 
-                    if (_BaseBoard == "Misano-K" && _MisanoFeature)
+                    if (Globals.BASE_BOARD == "Misano-K" && _MisanoFeature)
                         Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageMisano_Windows7;
 
                     if (Convert.ToInt32(value) != 1)
@@ -1569,18 +1570,20 @@ namespace ImagesServer_v3._0
                         pBoxStatus.Image = Properties.Resources.BadMark;
                         return;
                     }
-                    break;
+                   break;
 
-                case "WIN10":
-                    if (_BaseBoard == "Estoril" && !_MisanoFeature)
+               case "WIN10":
+                    if (Globals.BASE_BOARD == "Estoril" && !_MisanoFeature)
                         Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageEstoril_Windows10;
-
-                    if (_BaseBoard == "Misano" && _MisanoFeature)
+                    if (Globals.BASE_BOARD == "Misano" && _MisanoFeature) 
+                    // {
                         Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageMisano_Windows10;
+                        //goto foundit;
 
-                    if (_BaseBoard == "Misano-K" && _MisanoFeature)
+                       // }
+                 
+                    if (Globals.BASE_BOARD == "Misano-K" && _MisanoFeature)
                         Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageKabyLake_Windows10;
-
                     if (Convert.ToInt32(value) != 2)
                     {
                         lblImageName.Text = Globals.IMAGE_TO_INSTALL;
@@ -1591,37 +1594,43 @@ namespace ImagesServer_v3._0
                         pBoxStatus.Image = Properties.Resources.BadMark;
                         return;
                     }
-                    break;
+                  break;
 
 
-                case "WIN10_P110":
+               case "WIN10_P110":
 
-                    Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageMisano_Estoril_Windows10_5801_P110;
+             Globals.IMAGE_TO_INSTALL = ATM_Images.TestImageMisano_Estoril_Windows10_5801_P110;
 
-                    if (Convert.ToInt32(value) != 2)
-                    {
-                        lblImageName.Text = Globals.IMAGE_TO_INSTALL;
-                        MessageBox.Show("La configuracion del Bios no es la correcta!" + "\n" + "\n" + "CONFIGURACION ACTUAL: BIOS_MODE=LEGACY" + "\n" + "\n" + "CONFIGURACION ESPERADA: BIOS_MODE=UEFI", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        lblResult.ForeColor = Color.Red;
-                        lblResult.Text = "TEST IMAGE: Revise configuracion: BIOS_MODE=UEFI";
-                        pBoxStatus.Visible = true;
-                        pBoxStatus.Image = Properties.Resources.BadMark;
-                        return;
-                    }
-
-                    break;
-
-                default:
-                    lblImageName.Text = "COMPATIBLE IMAGE NOT FOUND TO " + _BaseBoard.ToUpper() + " MOTHERBOARD";
-                    MessageBox.Show("NO SE HA ENCONTRADO IMAGEN DE PRUEBA PARA ESTA UNIDAD." + "\n" + "\n" + "\n" + "CONTACTA A INGENIERIA DE PRUEBAS!", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+            if (Convert.ToInt32(value) != 2)
+            {
+                lblImageName.Text = Globals.IMAGE_TO_INSTALL;
+                MessageBox.Show("La configuracion del Bios no es la correcta!" + "\n" + "\n" + "CONFIGURACION ACTUAL: BIOS_MODE=LEGACY" + "\n" + "\n" + "CONFIGURACION ESPERADA: BIOS_MODE=UEFI", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lblResult.ForeColor = Color.Red;
+                lblResult.Text = "TEST IMAGE: Revise configuracion: BIOS_MODE=UEFI";
+                pBoxStatus.Visible = true;
+                pBoxStatus.Image = Properties.Resources.BadMark;
+                return;
             }
 
-            //APPLY IMAGE FOUNDED IT
-            lblImageName.Text = Globals.IMAGE_TO_INSTALL;
-            //_result = StaticJImgaeX.APPLY_RADSIMAGEX(ATM_IMAGES + "\"" + Globals.IMAGE_TO_INSTALL + "\"", "", Properties.Settings.Default._applyMode);
-            _result = StaticJImgaeX.APPLY_RADSIMAGEX(Globals.IMAGE_TO_INSTALL + "\"", "", Properties.Settings.Default._applyMode);
+             break;
 
+            default:
+                lblImageName.Text = "COMPATIBLE IMAGE NOT FOUND TO " + _BaseBoard.ToUpper() + " MOTHERBOARD";
+                MessageBox.Show("NO SE HA ENCONTRADO IMAGEN DE PRUEBA PARA ESTA UNIDAD." + "\n" + "\n" + "\n" + "CONTACTA A INGENIERIA DE PRUEBAS!", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+
+            
+                   
+            }
+
+            //APPLY IMAGE FOUNDED IT        
+                lblImageName.Text = Globals.IMAGE_TO_INSTALL;
+                //_result = StaticJImgaeX.APPLY_RADSIMAGEX(ATM_IMAGES + "\"" + Globals.IMAGE_TO_INSTALL + "\"", "", Properties.Settings.Default._applyMode)
+                _result = StaticJImgaeX.APPLY_RADSIMAGEX(Globals.IMAGE_TO_INSTALL, "", Properties.Settings.Default._applyMode);// Se esta configurando 
+               
+
+         
+           
 
             if (_result != 0)
             {
@@ -1918,6 +1927,7 @@ namespace ImagesServer_v3._0
             string _LOG = string.Empty;
             string _Status = string.Empty;
 
+
             bool _buildTypeExist = StaticFunctions.GetBuildType();
 
             string[] _InfoUnit = new iFactoryInfo.iFactoryInfo().GetSCMC(Globals.TRACER);
@@ -1953,7 +1963,9 @@ namespace ImagesServer_v3._0
                 return;
             }
 
+
             List<string> AllCustomOS = SSCO_Images.CustomOS;
+
             string[] _content = File.ReadAllLines(Globals.PATH_FEATURES + "feat" + Globals.CLASS);
 
             foreach (string _line in _content)
@@ -1981,6 +1993,9 @@ namespace ImagesServer_v3._0
         FoundIt:
             {
                 lblImageName.Text = "IMAGE: " + Globals.IMAGE_TO_INSTALL;
+                this.Refresh();
+                System.Threading.Thread.Sleep(100);
+                this.Refresh();
                 _result = StaticJImgaeX.APPLY_RADSIMAGEX(Globals.IMAGE_TO_INSTALL, "", Properties.Settings.Default._applyMode);
             }
 

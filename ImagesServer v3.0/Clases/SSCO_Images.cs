@@ -39,7 +39,7 @@ namespace ImagesServer_v3._0
         {
             get
             {
-                return ConfigFiles.reader("SSCO", "TestImage7703", Globals.PATH_TEST_CUSTOMOS);
+                return ConfigFiles.reader(TEST_IMAGES_SSCO, "TestImage7703", Globals.PATH_TEST_CUSTOMOS);
             }
         }
 
