@@ -39,16 +39,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
             this.dgvTests = new System.Windows.Forms.DataGridView();
-            this.txtScaneo = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TestName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MeasurementName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LowerLimit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UpperLimit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txtScaneo = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTests)).BeginInit();
@@ -67,11 +67,10 @@
             this.tableLayoutPanel1.Controls.Add(this.BtnExit, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(850, 39);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1275, 60);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label4
@@ -80,10 +79,9 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label4.Location = new System.Drawing.Point(11, 7);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(25, 12);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(220, 25);
+            this.label4.Size = new System.Drawing.Size(313, 36);
             this.label4.TabIndex = 12;
             this.label4.Text = "SCO DISPLAY TEST";
             // 
@@ -94,10 +92,9 @@
             this.lblVersion.BackColor = System.Drawing.Color.Transparent;
             this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVersion.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.lblVersion.Location = new System.Drawing.Point(245, 13);
-            this.lblVersion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblVersion.Location = new System.Drawing.Point(367, 21);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(53, 13);
+            this.lblVersion.Size = new System.Drawing.Size(69, 17);
             this.lblVersion.TabIndex = 13;
             this.lblVersion.Text = "VERSION";
             // 
@@ -109,9 +106,10 @@
             this.BtnExit.FlatAppearance.BorderSize = 0;
             this.BtnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnExit.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.BtnExit.Location = new System.Drawing.Point(817, 3);
+            this.BtnExit.Location = new System.Drawing.Point(1226, 5);
+            this.BtnExit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.BtnExit.Name = "BtnExit";
-            this.BtnExit.Size = new System.Drawing.Size(30, 29);
+            this.BtnExit.Size = new System.Drawing.Size(45, 45);
             this.BtnExit.TabIndex = 36;
             this.BtnExit.Text = "X";
             this.BtnExit.UseVisualStyleBackColor = false;
@@ -121,10 +119,9 @@
             // 
             this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pictureBox1.Image = global::ImagesServer_v3._0.Properties.Resources.DisplayTestIco;
-            this.pictureBox1.Location = new System.Drawing.Point(64, 6);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Location = new System.Drawing.Point(96, 9);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(74, 72);
+            this.pictureBox1.Size = new System.Drawing.Size(111, 111);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 35;
             this.pictureBox1.TabStop = false;
@@ -135,10 +132,9 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label2.Location = new System.Drawing.Point(645, 57);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(968, 88);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(93, 17);
+            this.label2.Size = new System.Drawing.Size(130, 25);
             this.label2.TabIndex = 40;
             this.label2.Text = "BUILDTYPE";
             this.label2.Click += new System.EventHandler(this.label2_Click);
@@ -149,10 +145,11 @@
             this.listView1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(45)))), ((int)(((byte)(54)))));
             this.listView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listView1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.listView1.Location = new System.Drawing.Point(641, 82);
-            this.listView1.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(962, 126);
+            this.listView1.Margin = new System.Windows.Forms.Padding(12);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(192, 481);
+            this.listView1.Size = new System.Drawing.Size(288, 740);
             this.listView1.TabIndex = 41;
             this.listView1.UseCompatibleStateImageBehavior = false;
             // 
@@ -190,13 +187,68 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvTests.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvTests.Location = new System.Drawing.Point(14, 237);
+            this.dgvTests.Location = new System.Drawing.Point(21, 397);
             this.dgvTests.Margin = new System.Windows.Forms.Padding(0);
             this.dgvTests.Name = "dgvTests";
             this.dgvTests.ReadOnly = true;
+            this.dgvTests.RowHeadersWidth = 62;
             this.dgvTests.RowTemplate.Height = 28;
-            this.dgvTests.Size = new System.Drawing.Size(612, 326);
+            this.dgvTests.Size = new System.Drawing.Size(918, 470);
             this.dgvTests.TabIndex = 39;
+            // 
+            // Date
+            // 
+            this.Date.HeaderText = "Date";
+            this.Date.MinimumWidth = 8;
+            this.Date.Name = "Date";
+            this.Date.ReadOnly = true;
+            this.Date.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Date.Width = 150;
+            // 
+            // TestName
+            // 
+            this.TestName.HeaderText = "TestName";
+            this.TestName.MinimumWidth = 8;
+            this.TestName.Name = "TestName";
+            this.TestName.ReadOnly = true;
+            this.TestName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TestName.Width = 150;
+            // 
+            // MeasurementName
+            // 
+            this.MeasurementName.HeaderText = "MeasurementName";
+            this.MeasurementName.MinimumWidth = 8;
+            this.MeasurementName.Name = "MeasurementName";
+            this.MeasurementName.ReadOnly = true;
+            this.MeasurementName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.MeasurementName.Width = 150;
+            // 
+            // LowerLimit
+            // 
+            this.LowerLimit.HeaderText = "LowerLimit";
+            this.LowerLimit.MinimumWidth = 8;
+            this.LowerLimit.Name = "LowerLimit";
+            this.LowerLimit.ReadOnly = true;
+            this.LowerLimit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.LowerLimit.Width = 150;
+            // 
+            // UpperLimit
+            // 
+            this.UpperLimit.HeaderText = "UpperLimit";
+            this.UpperLimit.MinimumWidth = 8;
+            this.UpperLimit.Name = "UpperLimit";
+            this.UpperLimit.ReadOnly = true;
+            this.UpperLimit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.UpperLimit.Width = 150;
+            // 
+            // Status
+            // 
+            this.Status.HeaderText = "Status";
+            this.Status.MinimumWidth = 8;
+            this.Status.Name = "Status";
+            this.Status.ReadOnly = true;
+            this.Status.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Status.Width = 70;
             // 
             // txtScaneo
             // 
@@ -205,11 +257,10 @@
             this.txtScaneo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtScaneo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtScaneo.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.txtScaneo.Location = new System.Drawing.Point(125, 170);
-            this.txtScaneo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtScaneo.Location = new System.Drawing.Point(188, 265);
             this.txtScaneo.Multiline = true;
             this.txtScaneo.Name = "txtScaneo";
-            this.txtScaneo.Size = new System.Drawing.Size(397, 30);
+            this.txtScaneo.Size = new System.Drawing.Size(596, 46);
             this.txtScaneo.TabIndex = 38;
             this.txtScaneo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtScaneo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtScaneo_KeyDown);
@@ -220,12 +271,11 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label1.Location = new System.Drawing.Point(220, 146);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(330, 225);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(201, 17);
+            this.label1.Size = new System.Drawing.Size(301, 25);
             this.label1.TabIndex = 37;
-            this.label1.Text = "ESCANEA TRACER O WIP:";
+            this.label1.Text = "ESCANEA SERIAL NUMBER:";
             // 
             // label3
             // 
@@ -233,10 +283,9 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label3.Location = new System.Drawing.Point(17, 211);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(16, 372);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(88, 17);
+            this.label3.Size = new System.Drawing.Size(125, 25);
             this.label3.TabIndex = 42;
             this.label3.Text = "TESTPLAN";
             // 
@@ -244,61 +293,18 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(45)))), ((int)(((byte)(54)))));
             this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Location = new System.Drawing.Point(223, 50);
+            this.panel1.Location = new System.Drawing.Point(334, 77);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(198, 86);
+            this.panel1.Size = new System.Drawing.Size(297, 132);
             this.panel1.TabIndex = 43;
-            // 
-            // Date
-            // 
-            this.Date.HeaderText = "Date";
-            this.Date.Name = "Date";
-            this.Date.ReadOnly = true;
-            this.Date.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // TestName
-            // 
-            this.TestName.HeaderText = "TestName";
-            this.TestName.Name = "TestName";
-            this.TestName.ReadOnly = true;
-            this.TestName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // MeasurementName
-            // 
-            this.MeasurementName.HeaderText = "MeasurementName";
-            this.MeasurementName.Name = "MeasurementName";
-            this.MeasurementName.ReadOnly = true;
-            this.MeasurementName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.MeasurementName.Width = 150;
-            // 
-            // LowerLimit
-            // 
-            this.LowerLimit.HeaderText = "LowerLimit";
-            this.LowerLimit.Name = "LowerLimit";
-            this.LowerLimit.ReadOnly = true;
-            this.LowerLimit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // UpperLimit
-            // 
-            this.UpperLimit.HeaderText = "UpperLimit";
-            this.UpperLimit.Name = "UpperLimit";
-            this.UpperLimit.ReadOnly = true;
-            this.UpperLimit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // Status
-            // 
-            this.Status.HeaderText = "Status";
-            this.Status.Name = "Status";
-            this.Status.ReadOnly = true;
-            this.Status.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Status.Width = 70;
             // 
             // SCODisplayTest
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(29)))), ((int)(((byte)(37)))));
-            this.ClientSize = new System.Drawing.Size(850, 580);
+            this.ClientSize = new System.Drawing.Size(1275, 892);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.listView1);
@@ -309,7 +315,6 @@
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "SCODisplayTest";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SCO_Display_Test";

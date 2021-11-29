@@ -422,6 +422,17 @@ namespace ImagesServer_v3._0
     /// NEW LOGIC TO GET COMPLTE PATH FROM INI FILE TestCustomOS.ini
     /// REMOVE QUATE MARKS IN LOG TO IFACTORY DUE TO IFACTORY CAN'T RECOGNIZE THIS SPECIAL CHARACTER
     /// 3.0.0.4
+    /// 3.0.0.5
+    /// 
+    ///
+    /// NOVEMBER 17TH 2021
+    /// ADDED NEW TEST FOR INCOMING DISPLAY
+    /// 3.0.0.6
+    /// 3.0.0.7
+    /// 
+    /// NOVEMBER 22TH 2021
+    /// Added SSD Verification
+    /// 3.0.0.8
 
 
     ///<summary>
@@ -429,15 +440,14 @@ namespace ImagesServer_v3._0
     ///</summary>
     public partial class Form1 : Form
     {
-        public static string _version { get; set; }
         bool _DarkMode = true;
         public Form1()
         {
             InitializeComponent();
             RoundObjects();
             //label with the application version.
-            _version = "v3.0.0.5";
-            lblVersion.Text = _version;
+            Globals.VERSION = "v3.0.0.8";
+            lblVersion.Text = Globals.VERSION;
         }
 
         #region Variables Globales
@@ -498,6 +508,7 @@ namespace ImagesServer_v3._0
 
             btnTestImage_sscos.Region = Region.FromHrgn(DesignGlobals.CreateRoundRectRgn(0, 0, btnTestImage_sscos.Width, btnTestImage_sscos.Height, 15, 15));
             btnCustomOS_sscos.Region = Region.FromHrgn(DesignGlobals.CreateRoundRectRgn(0, 0, btnCustomOS_sscos.Width, btnCustomOS_sscos.Height, 15, 15));
+            btnIncommingDisplay.Region = Region.FromHrgn(DesignGlobals.CreateRoundRectRgn(0, 0, btnIncommingDisplay.Width, btnIncommingDisplay.Height, 15, 15));
 
 
             //Apply Windows
@@ -2411,7 +2422,11 @@ namespace ImagesServer_v3._0
             RefreshItems();
         }
 
-
+        private void btnIncommingDisplay_Click(object sender, EventArgs e)
+        {
+            Globals.INCOMMING_DATA = ExcelFunctions.Excel_To_DataTable(Globals.PATH_INCOMMING_DATA, 0);
+            dialogResult = new SCO_Incomming_Validation().ShowDialog();
+        }
     }
     #endregion
 }

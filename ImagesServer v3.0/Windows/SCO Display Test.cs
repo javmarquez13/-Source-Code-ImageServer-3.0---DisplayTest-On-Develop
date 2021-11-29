@@ -35,7 +35,7 @@ namespace ImagesServer_v3._0
         public SCODisplayTest() 
         {
             InitializeComponent();
-            lblVersion.Text = Form1._version;
+            lblVersion.Text = Globals.VERSION;
             InicializarDGV();
             RoundObjects();
             txtScaneo.Enabled = false;
@@ -90,10 +90,6 @@ namespace ImagesServer_v3._0
         {
             if(e.KeyCode == Keys.Enter)
             {
-                //using (WaitWin waitWin = new WaitWin(MainFunction, "GETTING INFORMATION"))
-                //{
-                //    waitWin.ShowDialog(this);
-                //}          
                 MainFunction();
             }
         }
@@ -116,20 +112,41 @@ namespace ImagesServer_v3._0
                 this.Refresh();
             }
 
+            #region SSD Validation
 
+            long Actual_DiskSize = Globals.SSD_SIZE;
 
-            //if (listView1.InvokeRequired)
-            //{
-            //    listView1.Invoke((MethodInvoker)delegate ()
-            //    {
-            //        foreach(string Feat in _buildTyp)
-            //        {
-            //            var listViewItem = new ListViewItem(Feat);
-            //            listView1.Items.Add(listViewItem);
-            //            SCODisplayTest.ActiveForm.Refresh();
-            //        }      
-            //    });
-            //}
+            if (_buildTyp.Contains("240GB_SSD")) 
+            {
+                long Expected_DiskSize = 240000000000;
+                if (Actual_DiskSize <= (Expected_DiskSize * .1) && Actual_DiskSize >= Expected_DiskSize)
+                {
+                    _testPass = true;
+                    WriteDGV(_testPass, DateTime.Now, "SSD Size", Actual_DiskSize.ToString(), Expected_DiskSize.ToString(), (Expected_DiskSize * .1).ToString());
+                }
+                else 
+                {
+                    _testPass = false;
+                    WriteDGV(_testPass, DateTime.Now, "SSD Size", Actual_DiskSize.ToString(), Expected_DiskSize.ToString(), (Expected_DiskSize * .1).ToString());
+                }
+            }
+            if(_buildTyp.Contains("120GB_SSD"))
+            {
+                long Expected_DiskSize = 120000000000;
+                if (Actual_DiskSize <= Expected_DiskSize * .1 && Actual_DiskSize >= Expected_DiskSize) 
+                {
+                    _testPass = true;
+                    WriteDGV(_testPass, DateTime.Now, "SSD Size", Actual_DiskSize.ToString(), Expected_DiskSize.ToString(), (Expected_DiskSize * .1).ToString());
+                }
+                else
+                {
+                    _testPass = false;
+                    WriteDGV(_testPass, DateTime.Now, "SSD Size", Actual_DiskSize.ToString(), Expected_DiskSize.ToString(), (Expected_DiskSize * .1).ToString());
+                }
+            }
+            if (!_testPass) goto End;
+
+            #endregion
 
             #region TEST BASEBOARD TYPE
             _testPass = true;
@@ -153,13 +170,13 @@ namespace ImagesServer_v3._0
             }
 
             WriteDGV(_testPass, DateTime.Now, "BASEBOARD", _ProductBaseBoard, "", "");
-            //if (!_testPass) goto End;
+            if (!_testPass) goto End;
 
             #endregion
 
             #region TEST FOR CPU TYPE
             _testPass = true;
-            _CPUType = CheckCPUType();
+            _CPUType = Globals.CPU_TYPE;
             if (_buildTyp.Contains("INTEL_CELERON") && _buildTyp.Contains("XR7_DISPLAY"))
             {
                 if (_CPUType.Contains("G1820TE")) _testPass = true;
@@ -196,7 +213,7 @@ namespace ImagesServer_v3._0
                 else _testPass = false;
             }
             WriteDGV(_testPass, DateTime.Now, "CPU", _CPUType, "", "");
-            //if (!_testPass) goto End;
+            if (!_testPass) goto End;
             #endregion
 
             #region TEST FOR RAM
@@ -254,7 +271,7 @@ namespace ImagesServer_v3._0
             }
 
             WriteDGV(_testPass, DateTime.Now, "MEMORY RAM", _MemoryRamTotal.ToString(), _LowerLimit.ToString(), _UpperLimit.ToString());
-            //if (!_testPass) goto End;
+            if (!_testPass) goto End;
             #endregion
 
             #region MATCH MAC ADRESS
@@ -283,7 +300,7 @@ namespace ImagesServer_v3._0
                 {
                     WriteDGV(_testPass, DateTime.Now, "TEST PASS", "ENSAMBLE CORRECTO", "", "");
                     System.Threading.Thread.Sleep(1000);
-                    DialogResult = DialogResult.OK;
+                    //DialogResult = DialogResult.OK;
                 }
                 
             }
