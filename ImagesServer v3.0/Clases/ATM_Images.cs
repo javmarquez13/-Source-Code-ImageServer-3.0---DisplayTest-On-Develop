@@ -60,6 +60,9 @@ namespace ImagesServer_v3._0
         }
 
 
+
+
+
         public static string TestImageWin10IoT_2019_v1809
         {
             get
@@ -81,6 +84,15 @@ namespace ImagesServer_v3._0
             get
             {
                 return ConfigFiles.reader(TEST_IMAGES_ATM, "TestImageWindows7", Globals.PATH_TEST_CUSTOMOS);
+            }
+        }
+
+        private static string TEST_IMAGES_ATM_FEATURES = "TEST_IMAGES_ATM_FEATURES";
+        public static List<string> ATM_TestImage
+        {
+            get
+            {
+                return ConfigFiles.GetKeys(TEST_IMAGES_ATM_FEATURES);
             }
         }
 

@@ -433,6 +433,29 @@ namespace ImagesServer_v3._0
     /// NOVEMBER 22TH 2021
     /// Added SSD Verification
     /// 3.0.0.8
+    /// 
+    /// DECEMBER 01TH 2021
+    /// MIGRATE TO NEW IMAGES TA ACCOUNT FOR ATM
+    /// 
+    /// CONFIG FILE
+    /// 
+    /// [TEST_IMAGES_ATM_FEATURES]
+    /// ATM OPTION 1 T: = \\Mxchim0pangea01\ATM_IMAGES\
+    /// ATM OPTION 2 Z: = \\Mxchim0pangea02\ATM_IMAGES\
+    /// 5801P099=T:"!To Release\no funcionan\ATM_WIN07_NewTA_Ver1.1_20211125.wim
+    /// 5801P100=T:"!To Release\no funcionan\ATM_WIN10_V1607_Ver1.2_20211125.wim
+    /// 5801P101=T:"!To Release\no funcionan\ATM_WIN10_V1607_Ver1.2_20211125.wim
+    /// 5801P109=T:"!To Release\no funcionan\ATM_WIN10_V1607_Ver1.2_20211125.wim
+    /// 5801P110=T:"!To Release\no funcionan\ATM_WIN10_V1809_Ver1.1_20211125.wim
+    /// 5801P112=T:"!To Release\no funcionan\ATM_WIN10_V1809_Ver1.1_20211125.wim
+    /// 5801P113=T:"!To Release\no funcionan\ATM_WIN10_V1809_Ver1.1_20211125.wim
+    /// 
+    /// 3.0.0.9
+    /// 3.0.1.0
+    /// 
+    /// DECEMBER 02TH 2021
+    /// 3.0.1.1
+
 
 
     ///<summary>
@@ -446,7 +469,7 @@ namespace ImagesServer_v3._0
             InitializeComponent();
             RoundObjects();
             //label with the application version.
-            Globals.VERSION = "v3.0.0.8";
+            Globals.VERSION = "v3.0.1.1";
             lblVersion.Text = Globals.VERSION;
         }
 
@@ -670,19 +693,21 @@ namespace ImagesServer_v3._0
 
             if (_BaseBoard == "Estoril" || _BaseBoard == "Misano" || _BaseBoard == "Misano-K")
             {
-                InstallTestImageATM();
+                //InstallTestImageATM();
+                InstallTestImageATM_2021();
                 btnTestImage_sscos.Enabled = true;
                 return;
             }
 
             if (_BaseBoard == "Pocono" || _BaseBoard == "Monaco" || _BaseBoard == "Richmond" || _BaseBoard == "Eldora" || _BaseBoard == "8079")
-            {               
-                InstallTestImageSSCO();
+            {
+                //InstallTestImageSSCO();
+                InstallTestImageSSCO_2021();
                 btnTestImage_sscos.Enabled = true;
                 return;
             }
         }
-
+        
         private void Timer1_Tick(object sender, EventArgs e)
         {
             seconds--;
@@ -1256,11 +1281,6 @@ namespace ImagesServer_v3._0
             {
                 txtWimInfo_Apply.Text = ex.Message;
             }
-
-
-
-
-
         }
 
         private void BtnApplyJImagex_Click(object sender, EventArgs e)
@@ -1371,6 +1391,7 @@ namespace ImagesServer_v3._0
                 Globals.IMAGE_TO_INSTALL = SSCO_Images.TestImage7350R6L;
                 goto FoundIt;
             }
+
             if (Globals.BASE_BOARD == "Monaco" && Globals.CLASS == "7358")
             {
                 Globals.IMAGE_TO_INSTALL = SSCO_Images.TestImage7702;
@@ -1459,6 +1480,175 @@ namespace ImagesServer_v3._0
 
                 //_dr = StaticJImgaeX.APPLY_JIMAGEX(2, SSSCO_IMAGES_02 + Globals.IMAGE_TO_INSTALL, "C:");
                 _dr = StaticJImgaeX.APPLY_JIMAGEX(2,Globals.IMAGE_TO_INSTALL, "C:"); //path completo desde el INI FILE
+
+                //result = Diskpart.BCDBoot(@"C:\Windows /s C:"); working
+                result = Diskpart.BCDBoot(@"C:\Windows /s D:");
+
+                result = Diskpart.SendCommand("Select Disk 0",
+                                              "Select volume 0",
+                                              "set id=17 override");
+            }
+
+            //if (_result != 0)
+            if (_dr == DialogResult.Abort)
+            {
+                MessageBox.Show(lblImageName.Text + " No ha sido instalada correctamente...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lblResult.ForeColor = Color.Red;
+                lblResult.Text = "TEST IMAGE: No ha sido instalada correctamente...";
+                return;
+            }
+            //if (_result == 0)
+            if (_dr == DialogResult.OK)
+            {
+                lblResult.ForeColor = Color.Green;
+                lblResult.Text = "TEST IMAGE: Se instalo correctamente!";
+            }
+
+            try
+            {
+                char letter = 'A';
+                string _pathUnitInfo = @":\JABIL\";
+                while (letter < 'Z')
+                {
+                    if (Directory.Exists(letter + _pathUnitInfo))
+                    {
+                        _pathUnitInfo = letter + _pathUnitInfo + @"UnitInfo\";
+                        break;
+                    }
+                    else
+                        letter++;
+                }
+
+                DirectoryInfo DirInfo = new DirectoryInfo(_pathUnitInfo);
+
+                if (DirInfo.Exists)
+                {
+                    DirectoryInfo _dirFilesInfo = new DirectoryInfo(_pathUnitInfo);
+                    FileInfo[] _files = _dirFilesInfo.GetFiles();
+                    foreach (FileInfo _file in _files)
+                    {
+                        _file.Delete();
+                    }
+                }
+
+                if (!DirInfo.Exists) DirInfo.Create();
+
+                using (StreamWriter sw = File.CreateText(_pathUnitInfo + Globals.TRACER + "_" + DateTime.Now.Year + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second + ".txt"))
+                {
+                    sw.WriteLine(Globals.TRACER);
+                    sw.WriteLine(Globals.USER_ID);
+                    sw.WriteLine(Globals.USER_NAME);
+                    sw.WriteLine("0"); //defualt 0 
+                    sw.Close();
+                }
+
+                //reboot
+                StaticFunctions.RebootUnit();
+                timer1.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        void InstallTestImageSSCO_2021()
+        {
+            bool _flag = false;
+            string result = string.Empty;
+            DialogResult _dr = DialogResult.Abort;
+
+            _flag = UnitInfoFromIfactory();
+
+            if (!_flag) return;
+
+            if (string.IsNullOrEmpty(Globals.TRACER)) return;
+
+            dialogResult = new SCODisplayTest().ShowDialog();
+            if (dialogResult == DialogResult.Abort) return;
+
+            this.Refresh();
+
+            StaticFunctions.GetBuildType();
+
+            Globals.BASE_BOARD = StaticFunctions.GetMotherBoardType();
+
+            bool _isCompleteEjl = CheckEJL.IsCompleted_SSCOS(Globals.MAIN_DISK, Globals.TRACER);
+
+            if (_isCompleteEjl)
+            {
+                MessageBox.Show("Unidad con log : " + Globals.TRACER + ".ejl" + " completo" + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (CheckStepProcess.CheckStep(Globals.WIP, "CUSTOM OS"))
+            {
+                MessageBox.Show("Unidad con PASS de CUSTOM OS" + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (CheckStepProcess.CheckStep(Globals.WIP, "FVT"))
+            {
+                MessageBox.Show("Unidad con PASS de FVT" + "\n" + "\n" + "\n" + "Contacte a Ingenieria de pruebas...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            List<string> AllTestImages = SSCO_Images.SSCO_TestImage;
+
+
+            foreach (string _BaseBoard in AllTestImages)
+            {
+               if(_BaseBoard == Globals.BASE_BOARD) 
+                {
+                    Globals.IMAGE_TO_INSTALL = ConfigFiles.reader("TEST_IMAGES_SSCO_BASEBOARD", _BaseBoard, Globals.PATH_TEST_CUSTOMOS);
+                    break;
+                }
+
+                break;
+            }
+
+            if (!string.IsNullOrEmpty(Globals.IMAGE_TO_INSTALL)) goto FoundIt;
+
+        OnError:
+            {
+                lblImageName.Text = "COMPATIBLE IMAGE NOT FOUND TO " + Globals.BASE_BOARD.ToUpper() + " MOTHERBOARD";
+                MessageBox.Show("NO SE HA ENCONTRADO IMAGEN DE PRUEBA PARA ESTA UNIDAD." + "\n" + "\n" + "\n" + "CONTACTA A INGENIERIA DE PRUEBAS!", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
+        FoundIt:
+            {
+                lblImageName.Text = Globals.IMAGE_TO_INSTALL;
+
+                void SetupDisk()
+                {
+                    result = Diskpart.SendCommand("Select Disk 0", "Clean");
+
+                    result = Diskpart.SendCommand("Select Disk 0",
+                                                  "Create Partition Primary size=359",
+                                                  "Select partition 1",
+                                                  "assign letter=D",
+                                                  "format fs=ntfs quick label=System",
+                                                  "Active");  ///not active
+
+                    result = Diskpart.SendCommand("Select Disk 0",
+                                                  "Select partition 2",
+                                                  "Create Partition Primary",
+                                                  "assign letter=C",
+                                                  "format fs=ntfs quick label=OS");
+
+                    //result = Diskpart.SendCommand("Select Disk 0",
+                    //                              "Select volume 1",
+                    //                              "Active");
+                }
+
+                using (WaitWin waitWin = new WaitWin(SetupDisk, "BUILDING DISK PARTITIONS")) waitWin.ShowDialog();
+
+                //_dr = StaticJImgaeX.APPLY_JIMAGEX(1, SSSCO_IMAGES_02 + IMAGE_TO_INSTALL, "D:");
+
+                //_dr = StaticJImgaeX.APPLY_JIMAGEX(2, SSSCO_IMAGES_02 + Globals.IMAGE_TO_INSTALL, "C:");
+                _dr = StaticJImgaeX.APPLY_JIMAGEX(2, Globals.IMAGE_TO_INSTALL, "C:"); //path completo desde el INI FILE
 
                 //result = Diskpart.BCDBoot(@"C:\Windows /s C:"); working
                 result = Diskpart.BCDBoot(@"C:\Windows /s D:");
@@ -1714,6 +1904,187 @@ namespace ImagesServer_v3._0
                         break;
                 }
     
+                if (_dr == DialogResult.OK)
+                {
+                    lblResult.ForeColor = Color.Green;
+                    lblResult.Text = lblResult.Text + "\n" + "ITM IMAGE: Se instalo correctamente!";
+                    pBoxStatus.Visible = true;
+                    pBoxStatus.Image = Properties.Resources.GoodMark;
+                }
+
+                if (_dr == DialogResult.Abort)
+                {
+                    MessageBox.Show(lblImageName.Text + " No ha sido instalada correctamente...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    lblResult.ForeColor = Color.Red;
+                    lblResult.Text = lblResult.Text + "\n" + "ITM IMAGE: No ha sido instalada correctamente...";
+                    pBoxStatus.Visible = true;
+                    pBoxStatus.Image = Properties.Resources.BadMark;
+                    return;
+                }
+            }
+
+            //At the end up the unit will be restarted
+            StaticFunctions.RebootUnit();
+            timer1.Start();
+        }
+
+        void InstallTestImageATM_2021()
+        {
+            string _OS = string.Empty;
+            bool _flag = false;
+            int _result = 0;
+            string _BaseBoard = string.Empty;
+            bool _MisanoFeature = false;
+            string result = string.Empty;
+            DialogResult _dr = DialogResult.Abort;
+
+            _flag = UnitInfoFromIfactory();
+
+            if (!_flag) return;
+
+            object value = StaticFunctions.PEFirmwareType(); //Function to review the BIOS CONFIGURATION 1=LEGACY 2=UEFI
+
+            List<string> AllTestImages = ATM_Images.ATM_TestImage;
+
+            string[] _content = File.ReadAllLines(Globals.PATH_FEATURES + "feat" + Globals.CLASS);
+
+            foreach (string _line in _content)
+            {
+                if (_line.Contains(Globals.CLASS + "-MC" + Globals.MC))
+                {
+                    foreach (string TestImageByFeature in AllTestImages)
+                    {
+                        if (_line.Contains(TestImageByFeature))
+                        {
+                            Globals.IMAGE_TO_INSTALL = ConfigFiles.reader("TEST_IMAGES_ATM_FEATURES", TestImageByFeature, Globals.PATH_TEST_CUSTOMOS);
+
+
+                            if (Globals.IMAGE_TO_INSTALL.Contains("WIN07")) 
+                            {
+                                if (Convert.ToInt32(value) != 1)
+                                {
+                                    lblImageName.Text = Globals.IMAGE_TO_INSTALL;
+                                    MessageBox.Show("La configuracion del Bios no es la correcta!" + "\n" + "\n" + "CONFIGURACION ACTUAL: BIOS_MODE=UEFI" + "\n" + "\n" + "CONFIGURACION ESPERADA: BIOS_MODE=LEGACY", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    lblResult.ForeColor = Color.Red;
+                                    lblResult.Text = "TEST IMAGE: Revise configuracion: BIOS_MODE=LEGACY";
+                                    pBoxStatus.Visible = true;
+                                    pBoxStatus.Image = Properties.Resources.BadMark;
+                                    return;
+                                }
+                            }
+
+
+                            if (Globals.IMAGE_TO_INSTALL.Contains("WIN10")) 
+                            {
+                                if (Convert.ToInt32(value) != 2)
+                                {
+                                    lblImageName.Text = Globals.IMAGE_TO_INSTALL;
+                                    MessageBox.Show("La configuracion del Bios no es la correcta!" + "\n" + "\n" + "CONFIGURACION ACTUAL: BIOS_MODE=LEGACY" + "\n" + "\n" + "CONFIGURACION ESPERADA: BIOS_MODE=UEFI", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    lblResult.ForeColor = Color.Red;
+                                    lblResult.Text = "TEST IMAGE: Revise configuracion: BIOS_MODE=UEFI";
+                                    pBoxStatus.Visible = true;
+                                    pBoxStatus.Image = Properties.Resources.BadMark;
+                                    return;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+
+
+            if (!string.IsNullOrEmpty(Globals.IMAGE_TO_INSTALL)) goto FoundIt;
+
+            lblImageName.Text = "";
+            MessageBox.Show("NO SE HA ENCONTRADO IMAGEN DE PRUEBA PARA ESTA UNIDAD." + "\n" + "\n" + "\n" + "CONTACTA A INGENIERIA DE PRUEBAS!", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+
+        FoundIt:
+            {
+                //APPLY IMAGE FOUNDED IT
+                lblImageName.Text = "IMAGE: " + Globals.IMAGE_TO_INSTALL;
+                this.Refresh();
+                System.Threading.Thread.Sleep(100);
+                this.Refresh();
+                _result = StaticJImgaeX.APPLY_RADSIMAGEX(Globals.IMAGE_TO_INSTALL, "", Properties.Settings.Default._applyMode);
+            }
+
+
+            if (_result != 0)
+            {
+                MessageBox.Show(lblImageName.Text + " No ha sido instalada correctamente...", "OnError", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lblResult.ForeColor = Color.Red;
+                lblResult.Text = "TEST IMAGE: No ha sido instalada correctamente...";
+                pBoxStatus.Visible = true;
+                pBoxStatus.Image = Properties.Resources.BadMark;
+                return;
+            }
+
+            if (_result == 0)
+            {
+                lblResult.ForeColor = Color.Green;
+                lblResult.Text = "TEST IMAGE: Se instalo correctamente!";
+                pBoxStatus.Visible = true;
+                pBoxStatus.Image = Properties.Resources.GoodMark;
+            }
+
+
+            char letter = 'A';
+            string _pathUnitInfo = @":\Pangaea\ExternalExecutables\USBDeviceNCRChecker\";
+            while (letter < 'Z')
+            {
+                if (Directory.Exists(letter + _pathUnitInfo))
+                {
+                    _pathUnitInfo = letter + _pathUnitInfo + @"UnitInfo\";
+                    break;
+                }
+                else
+                    letter++;
+            }
+
+            DirectoryInfo DirInfo = new DirectoryInfo(_pathUnitInfo);
+
+            if (!DirInfo.Exists) DirInfo.Create();
+
+            using (StreamWriter sw = File.CreateText(_pathUnitInfo + "UnitInfo" + ".txt"))
+            {
+                sw.WriteLine(Globals.TRACER);
+                sw.WriteLine(Globals.USER_ID);
+                sw.Close();
+            }
+
+            //This function only apply for units that are Interactive Teller Machine ITM            
+            var ItemsFromITM = StaticFunctions.IsITM(Globals.CLASS, Globals.MC);
+            if (ItemsFromITM.Item1 && ItemsFromITM.Item2)
+            {
+                void SetupDisk()
+                {
+                    result = Diskpart.SendCommand("Select Disk 0",
+                                                  "Select partition 2",
+                                                  "Shrink desired=100000",
+                                                  "Create Partition Primary size=100000",
+                                                  "Select partition 3",
+                                                  "assign letter=K",
+                                                  "format fs=ntfs quick label=ITM");
+                }
+                using (WaitWin waitWin = new WaitWin(SetupDisk, "BUILDING DISK PARTITIONS FOR ITM OS | " + ItemsFromITM.Item3)) waitWin.ShowDialog();
+
+                switch (_OS)
+                {
+                    case "WIN7":
+                        lblImageName.Text = ATM_Images.ITM_Windows7;
+                        _dr = StaticJImgaeX.APPLY_JIMAGEX(2, ATM_Images.ITM_Windows7, "K:");
+                        break;
+
+                    case "WIN10":
+                        lblImageName.Text = ATM_Images.ITM_Windows10;
+                        _dr = StaticJImgaeX.APPLY_JIMAGEX(1, ATM_Images.ITM_Windows10, "K:");
+                        break;
+                }
+
                 if (_dr == DialogResult.OK)
                 {
                     lblResult.ForeColor = Color.Green;

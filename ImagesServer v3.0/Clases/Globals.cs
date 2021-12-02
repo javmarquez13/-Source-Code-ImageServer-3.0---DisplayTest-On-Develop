@@ -222,11 +222,6 @@ namespace ImagesServer_v3._0
 
 
 
-
-
-
-
-
         private static DataTable _IncommingData;
         public static DataTable INCOMMING_DATA
         {
@@ -316,7 +311,6 @@ namespace ImagesServer_v3._0
                     Size =Convert.ToInt64(queryObj["Size"]);
                     break;
                 }
-
 
                 return Size;         
             }
